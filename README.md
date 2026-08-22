@@ -29,19 +29,25 @@ voce + countdown → `/player` → Fine.
 `public/design/` conserva i documenti di design originali (Player e flusso a
 sedici schermate) come riferimento.
 
-## Configurazione
+## La chiave API
 
-Il parser richiede una chiave API Anthropic. In locale, crea `.env.local`:
+La lettura usa Claude, quindi serve una chiave Anthropic. In questa versione
+**la chiave è dell'utente**: la inserisce in `/chiave`, resta nel `localStorage`
+del suo browser, e viaggia in un header verso `/api/parse` solo nel momento
+della lettura. Il server la usa per quella chiamata e basta — non la salva, non
+la scrive nei log, non la mette mai in un URL.
 
-```
-ANTHROPIC_API_KEY=...
-```
+Conseguenza pratica: il deploy pubblico non espone la tua carta, perché ognuno
+paga il proprio consumo, e **su Vercel non serve impostare nessuna variabile
+d'ambiente**.
 
-(`.env*.local` è già in `.gitignore` — la chiave non finisce nel repo.)
-Su Vercel va impostata come Environment Variable del progetto.
+Resta un fallback: se `ANTHROPIC_API_KEY` è presente lato server, viene usata
+quando l'utente non ne ha una propria — comodo per un deploy privato tuo o per
+lo sviluppo in locale (`.env.local`, già coperto da `.gitignore`).
 
-Senza chiave l'app funziona, ma la lettura di una scheda si ferma con un
-messaggio esplicito invece di fallire in silenzio.
+> Nota di prodotto: chiedere una chiave API va bene per il prototipo, non per
+> gli utenti veri del brief (gente in palestra, PT). Quando il prodotto esce,
+> serve una chiave tua dietro un account e un limite di consumo.
 
 ## In locale
 

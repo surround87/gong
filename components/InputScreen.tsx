@@ -8,6 +8,7 @@ import {
   type RisultatoParsing,
 } from "@/lib/parsedSession";
 import { getSavedSessions, type CompletedSession } from "@/lib/sessionPrefs";
+import { getApiKey } from "@/lib/apiKey";
 import styles from "./InputScreen.module.css";
 
 type Fase =
@@ -82,16 +83,27 @@ export default function InputScreen() {
   }, [fase.nome, righe.length]);
 
   async function invia(payload: { testo?: string; immagine?: { mediaType: string; data: string }; nomeFile?: string }) {
+    const chiave = getApiKey();
+    if (!chiave) {
+      router.push("/chiave");
+      return;
+    }
+
     setFase({ nome: "lettura" });
     try {
       const res = await fetch("/api/parse", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", "x-anthropic-key": chiave },
         body: JSON.stringify(payload),
       });
       const data = await res.json();
 
       if (!res.ok) {
+        // A key problem is a detour, not a dead end — send them to fix it.
+        if (data?.chiaveMancante) {
+          router.push("/chiave");
+          return;
+        }
         setFase({
           nome: "errore",
           titolo: "Non sono riuscito a leggerla.",
@@ -309,6 +321,9 @@ export default function InputScreen() {
         <div className={styles.brand}>
           {MARCHIO}
           <span className={styles.brandName}>GONG</span>
+          <button className={styles.chiaveLink} onClick={() => router.push("/chiave")}>
+            Chiave
+          </button>
         </div>
 
         {haLibreria && !scrivendo ? (

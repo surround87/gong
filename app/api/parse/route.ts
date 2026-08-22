@@ -25,13 +25,16 @@ type ImmaginePayload = { mediaType: string; data: string };
 const MEDIA_IMMAGINE = ["image/jpeg", "image/png", "image/gif", "image/webp"];
 
 export async function POST(request: Request) {
-  if (!process.env.ANTHROPIC_API_KEY) {
+  // The user's own key, sent per-request from their device. A server-side
+  // ANTHROPIC_API_KEY is only a fallback for a private deployment. The key is
+  // used for this one call and never stored or logged.
+  const chiaveUtente = request.headers.get("x-anthropic-key")?.trim();
+  const apiKey = chiaveUtente || process.env.ANTHROPIC_API_KEY;
+
+  if (!apiKey) {
     return NextResponse.json(
-      {
-        errore:
-          "Il parser non è configurato: manca la chiave ANTHROPIC_API_KEY sul server.",
-      },
-      { status: 503 },
+      { errore: "Serve la tua chiave API per leggere una scheda.", chiaveMancante: true },
+      { status: 401 },
     );
   }
 
@@ -80,7 +83,7 @@ export async function POST(request: Request) {
   });
 
   try {
-    const client = new Anthropic();
+    const client = new Anthropic({ apiKey });
     const response = await client.messages.parse({
       model: "claude-opus-5",
       max_tokens: 16000,
@@ -100,7 +103,10 @@ export async function POST(request: Request) {
     return NextResponse.json(response.parsed_output);
   } catch (error) {
     if (error instanceof Anthropic.AuthenticationError) {
-      return NextResponse.json({ errore: "Chiave API non valida." }, { status: 502 });
+      return NextResponse.json(
+        { errore: "La chiave API non è valida o non ha credito.", chiaveMancante: true },
+        { status: 401 },
+      );
     }
     if (error instanceof Anthropic.RateLimitError) {
       return NextResponse.json(
@@ -108,7 +114,7 @@ export async function POST(request: Request) {
         { status: 429 },
       );
     }
-    console.error("[parse]", error);
+    console.error("[parse] lettura fallita:", error instanceof Error ? error.message : "errore sconosciuto");
     return NextResponse.json({ errore: "La lettura è fallita." }, { status: 502 });
   }
 }
