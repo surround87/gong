@@ -2,15 +2,20 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ACCENTS, WorkoutStep, fmtCountdown, isContorno, nextStepLabel } from "./workout";
+import { speak, type Persona } from "./voice";
+import { beep, gong, now as audioNow } from "./audioCues";
 
 export type SessionStatus = "idle" | "running" | "paused" | "done";
 
 const LONG_PRESS_MS = 520;
 const RISE_WINDOW_S = 3;
-const RISE_MAX_PCT = 62;
+const RISE_MAX_PCT = 100;
+const STUCK_NUDGE_S = 90;
+const TEN_SECOND_WARNING_MIN_DURATION_S = 20;
 
 interface DisplayState {
   status: SessionStatus;
+  elapsedSec: number;
   blocco: string;
   round: string;
   statoLabel: string;
@@ -38,6 +43,7 @@ function initialDisplay(steps: WorkoutStep[]): DisplayState {
   const step = steps[0];
   return {
     status: "idle",
+    elapsedSec: 0,
     blocco: step.blocco,
     round: step.round ?? "",
     statoLabel: labelFor(step),
@@ -63,7 +69,7 @@ function initialDisplay(steps: WorkoutStep[]): DisplayState {
  * to 60x/sec — everything else only changes a few times a second and is
  * plain state.
  */
-export function useWorkoutSession(steps: WorkoutStep[]) {
+export function useWorkoutSession(steps: WorkoutStep[], persona: Persona) {
   const [display, setDisplay] = useState<DisplayState>(() => initialDisplay(steps));
 
   const progressRef = useRef<HTMLDivElement | null>(null);
@@ -72,10 +78,20 @@ export function useWorkoutSession(steps: WorkoutStep[]) {
   const indexRef = useRef(0);
   const statusRef = useRef<SessionStatus>("idle");
   const anchorRef = useRef(0);
+  const sessionStartRef = useRef(0);
   const remainingAtPauseRef = useRef(0);
   const rafRef = useRef<number | undefined>(undefined);
   const longPressTimerRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const longPressFiredRef = useRef(false);
+
+  // Per-step audio/voice cue tracking — reset whenever a new step is entered,
+  // so each cue fires exactly once even though the countdown is re-evaluated
+  // on every animation frame.
+  const beepedAtRef = useRef<Set<number>>(new Set());
+  const endSoundedRef = useRef(false);
+  const tenSecondWarnedRef = useRef(false);
+  const stuckNudgedRef = useRef(false);
+  const halfwaySaidRef = useRef(false);
 
   const setProgress = useCallback((pct: number) => {
     if (progressRef.current) progressRef.current.style.width = `${pct}%`;
@@ -108,8 +124,29 @@ export function useWorkoutSession(steps: WorkoutStep[]) {
       }));
       setProgress((index / steps.length) * 100);
       setRise(0);
+
+      beepedAtRef.current = new Set();
+      endSoundedRef.current = false;
+      tenSecondWarnedRef.current = false;
+      stuckNudgedRef.current = false;
+
+      if (step.attesa) {
+        speak(persona, "serie", step.eser, step.rip ?? 0);
+      } else if (step.t === "lavoro") {
+        if (step.ultimo) speak(persona, "ultimoRound");
+        else speak(persona, "lavoro", step.eser);
+      } else if (step.t === "riposo") {
+        speak(persona, "riposo");
+      } else if (step.t === "recupero") {
+        speak(persona, "recupero");
+      }
+
+      if (!halfwaySaidRef.current && index > steps.length / 2 && steps.length > 20) {
+        halfwaySaidRef.current = true;
+        speak(persona, "meta");
+      }
     },
-    [steps, setProgress, setRise],
+    [steps, setProgress, setRise, persona],
   );
 
   const goTo = useCallback(
@@ -118,25 +155,38 @@ export function useWorkoutSession(steps: WorkoutStep[]) {
         indexRef.current = steps.length - 1;
         statusRef.current = "done";
         cancelAnimationFrame(rafRef.current!);
-        setDisplay((prev) => ({ ...prev, status: "done" }));
+        speak(persona, "fine");
+        gong(audioNow(), 147);
+        const elapsedSec = (Date.now() - sessionStartRef.current) / 1000;
+        setDisplay((prev) => ({ ...prev, status: "done", elapsedSec }));
         return;
       }
       indexRef.current = index;
       anchorRef.current = Date.now();
       applyStep(index);
     },
-    [steps, applyStep],
+    [steps, applyStep, persona],
   );
 
   const loop = useCallback(() => {
     rafRef.current = requestAnimationFrame(loop);
     if (statusRef.current !== "running") return;
     const step = steps[indexRef.current];
-    if (!step || step.attesa) return;
+    if (!step) return;
+
+    if (step.attesa) {
+      const waitedFor = (Date.now() - anchorRef.current) / 1000;
+      if (waitedFor > STUCK_NUDGE_S && !stuckNudgedRef.current) {
+        stuckNudgedRef.current = true;
+        speak(persona, "sveglia");
+      }
+      return;
+    }
 
     const elapsed = (Date.now() - anchorRef.current) / 1000;
     const duration = step.d ?? 0;
     const remaining = Math.max(0, duration - elapsed);
+    const remainingCeil = Math.ceil(remaining);
 
     setDisplay((prev) => {
       const nextText = fmtCountdown(remaining);
@@ -151,8 +201,32 @@ export function useWorkoutSession(steps: WorkoutStep[]) {
       setRise(0);
     }
 
-    if (remaining <= 0) goTo(indexRef.current + 1);
-  }, [steps, goTo, setProgress, setRise]);
+    if (
+      step.t === "lavoro" &&
+      duration >= TEN_SECOND_WARNING_MIN_DURATION_S &&
+      remainingCeil === 10 &&
+      !tenSecondWarnedRef.current
+    ) {
+      tenSecondWarnedRef.current = true;
+      speak(persona, "ultimi");
+    }
+
+    if (duration > RISE_WINDOW_S && remainingCeil >= 1 && remainingCeil <= RISE_WINDOW_S) {
+      if (!beepedAtRef.current.has(remainingCeil)) {
+        beepedAtRef.current.add(remainingCeil);
+        beep(audioNow(), 760, 0.09, 0.35);
+      }
+    }
+
+    if (remaining <= 0) {
+      if (!endSoundedRef.current) {
+        endSoundedRef.current = true;
+        if (step.t === "lavoro") gong(audioNow(), 220);
+        else beep(audioNow(), 980, 0.16, 0.4);
+      }
+      goTo(indexRef.current + 1);
+    }
+  }, [steps, goTo, setProgress, setRise, persona]);
 
   useEffect(() => {
     rafRef.current = requestAnimationFrame(loop);
@@ -167,6 +241,7 @@ export function useWorkoutSession(steps: WorkoutStep[]) {
     if (statusRef.current === "running") return;
     statusRef.current = "running";
     anchorRef.current = Date.now();
+    sessionStartRef.current = Date.now();
     setDisplay((prev) => ({ ...prev, status: "running" }));
   }, []);
 

@@ -3,15 +3,38 @@
 import { useEffect, useMemo, useState, type CSSProperties } from "react";
 import { useRouter } from "next/navigation";
 import { useWorkoutSession } from "@/lib/useWorkoutSession";
-import { buildDemoSession, BG, FG } from "@/lib/workout";
+import {
+  buildDemoSession,
+  BG,
+  FG,
+  DEMO_SESSION_TITLE,
+  DEMO_SESSION_ESTIMATE_MIN,
+  summarizeSession,
+  estimateComparison,
+  fmtCountdown,
+} from "@/lib/workout";
+import { flattenAllenamento, getAllenamentoAttivo } from "@/lib/parsedSession";
+import { getPersona, saveCompletedSession } from "@/lib/sessionPrefs";
+import { requestWakeLock, releaseWakeLock, watchVisibilityForReacquire } from "@/lib/wakeLock";
+import { resumeIfSuspended } from "@/lib/audioCues";
 import styles from "./PlayerScreen.module.css";
 
 export default function PlayerScreen() {
   const router = useRouter();
-  const steps = useMemo(() => buildDemoSession(), []);
-  const session = useWorkoutSession(steps);
+  // Runs the workout the user loaded; falls back to the built-in demo session
+  // when the player is opened directly without one.
+  const attivo = useMemo(() => getAllenamentoAttivo(), []);
+  const steps = useMemo(
+    () => (attivo ? flattenAllenamento(attivo) : buildDemoSession()),
+    [attivo],
+  );
+  const titolo = attivo?.titolo ?? DEMO_SESSION_TITLE;
+  const stima = attivo?.durataStimataMin ?? DEMO_SESSION_ESTIMATE_MIN;
+  const persona = useMemo(() => getPersona() ?? "tecnico", []);
+  const session = useWorkoutSession(steps, persona);
   const {
     status,
+    elapsedSec,
     blocco,
     round,
     statoLabel,
@@ -43,16 +66,58 @@ export default function PlayerScreen() {
     start();
   }, [start]);
 
+  useEffect(() => {
+    requestWakeLock();
+    const stopWatchingVisibility = watchVisibilityForReacquire();
+    const onVisibility = () => resumeIfSuspended();
+    document.addEventListener("visibilitychange", onVisibility);
+    return () => {
+      releaseWakeLock();
+      stopWatchingVisibility();
+      document.removeEventListener("visibilitychange", onVisibility);
+    };
+  }, []);
+
   if (status === "done") {
+    const summary = summarizeSession(steps);
+    const summaryLine = `${summary.blocchi} blocchi · ${summary.round} round${
+      summary.serieChiuseAMano ? ` · ${summary.serieChiuseAMano} serie chiuse a mano` : ""
+    }`;
+
+    const handleSave = () => {
+      saveCompletedSession({
+        titolo,
+        durataRealeSec: elapsedSec,
+        durataStimataMin: stima,
+        blocchi: summary.blocchi,
+        round: summary.round,
+        serieChiuseAMano: summary.serieChiuseAMano,
+        completedAt: new Date().toISOString(),
+      });
+      router.push("/");
+    };
+
     return (
       <div className={styles.screen} style={{ background: BG }}>
         <div className={styles.done}>
-          <div className={styles.doneLabel}>Sessione completata</div>
-          <div className={styles.doneTitle} style={{ color: FG }}>
-            Ben fatto.
+          <div className={styles.doneKicker}>{titolo}</div>
+          <div className={styles.doneDivider} />
+          <svg width="86" height="86" viewBox="0 0 86 86" className={styles.doneMark}>
+            <circle cx="43" cy="43" r="37" fill="none" stroke="#C8FF00" strokeWidth="9" />
+            <circle cx="43" cy="43" r="11" fill="#C8FF00" />
+          </svg>
+          <div className={styles.doneTitle}>Fatta.</div>
+          <div className={styles.doneTime}>{fmtCountdown(elapsedSec)}</div>
+          <div className={styles.doneSummary}>{summaryLine}</div>
+          <div className={styles.doneEstimate}>
+            {estimateComparison(elapsedSec, stima)}
           </div>
-          <button className={styles.doneButton} onClick={() => router.push("/")}>
-            Ricomincia
+          <div className={styles.doneSpacer} />
+          <button className={styles.doneButtonPrimary} onClick={() => router.push("/preflight")}>
+            Rifai
+          </button>
+          <button className={styles.doneButtonSecondary} onClick={handleSave}>
+            Salva in libreria
           </button>
         </div>
       </div>
@@ -88,8 +153,6 @@ export default function PlayerScreen() {
         <div className={styles.divider} />
 
         <div className={styles.center}>
-          <div className={styles.illu} style={{ opacity: contorno ? 0.5 : 0.09 }} />
-
           <div className={`${styles.stato} ${statoInverted ? styles.inverted : ""}`}>
             {statoLabel}
           </div>

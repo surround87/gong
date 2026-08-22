@@ -16,6 +16,8 @@ export interface WorkoutStep {
   attesa?: boolean;
   /** Rep count, for `attesa` steps. */
   rip?: number;
+  /** Preparation/transition filler, not a real training block — excluded from session summaries. */
+  pseudo?: boolean;
 }
 
 export const ACCENTS: Record<StepType, string> = {
@@ -25,6 +27,11 @@ export const ACCENTS: Record<StepType, string> = {
   recupero: "#00C2FF",
   serie: "#FF3D6E",
 };
+
+/** No named-session support yet (that's Phase B, once Input/Library exist). */
+export const DEMO_SESSION_TITLE = "Sessione demo";
+/** Minutes — stands in for the Confirm screen's parser-estimated range (Phase B). */
+export const DEMO_SESSION_ESTIMATE_MIN: [number, number] = [5, 7];
 
 export const BG = "#0A0A0B";
 export const FG = "#F5F5F0";
@@ -55,6 +62,7 @@ export function buildDemoSession(): WorkoutStep[] {
     blocco: "Preparazione",
     eser: "Preparati",
     hint: "Tieni premuto per mettere in pausa",
+    pseudo: true,
   });
 
   const es = ["Kettlebell swing", "Burpee"];
@@ -83,6 +91,7 @@ export function buildDemoSession(): WorkoutStep[] {
     d: 75,
     blocco: "Transizione",
     eser: "→ Panca piana",
+    pseudo: true,
   });
 
   for (let i = 1; i <= 2; i++) {
@@ -128,6 +137,32 @@ export function buildDemoSession(): WorkoutStep[] {
   }
 
   return steps;
+}
+
+export interface SessionSummary {
+  blocchi: number;
+  round: number;
+  serieChiuseAMano: number;
+}
+
+/** Powers the Fine screen's "3 blocchi · 6 round · 2 serie chiuse a mano" line. */
+export function summarizeSession(steps: WorkoutStep[]): SessionSummary {
+  const realBlocks = new Set(steps.filter((s) => !s.pseudo).map((s) => s.blocco));
+  return {
+    blocchi: realBlocks.size,
+    round: steps.filter((s) => s.t === "lavoro").length,
+    serieChiuseAMano: steps.filter((s) => s.attesa).length,
+  };
+}
+
+/** The Fine screen's estimate-vs-actual sentence — compares real elapsed time to the estimate. */
+export function estimateComparison(actualSec: number, estimateMin: [number, number]): string {
+  const actualMin = actualSec / 60;
+  const [lo, hi] = estimateMin;
+  const stimavo = `Stimavo ${lo}-${hi}.`;
+  if (actualMin < lo) return `${stimavo} Sei andato più svelto.`;
+  if (actualMin > hi) return `${stimavo} Ci hai messo più tempo.`;
+  return `${stimavo} Ci hai preso in pieno.`;
 }
 
 /** Label shown for the *next* step, used on the "Poi · …" line. */

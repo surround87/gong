@@ -1,0 +1,226 @@
+.screen {
+  min-height: 100dvh;
+  background: #0a0a0b;
+  color: #f5f5f0;
+  display: flex;
+  flex-direction: column;
+  padding: max(24px, env(safe-area-inset-top)) 24px max(24px, env(safe-area-inset-bottom));
+}
+
+/* ---------- f13 · voice picker ---------- */
+
+.kicker {
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #6e6e76;
+}
+
+.title {
+  font-size: clamp(28px, 8vw, 34px);
+  font-weight: 800;
+  line-height: 1.08;
+  margin-top: 10px;
+}
+
+.cards {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 26px;
+}
+
+.card {
+  border: 2px solid #2c2c31;
+  padding: 22px 20px;
+  text-align: left;
+  background: transparent;
+  color: inherit;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.card.selected {
+  border: 3px solid #f5f5f0;
+}
+
+.cardLabel {
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #8b8b93;
+}
+
+.card.selected .cardLabel {
+  color: #f5f5f0;
+}
+
+.cardPhrase {
+  font-size: 25px;
+  font-weight: 800;
+  line-height: 1.22;
+  margin-top: 10px;
+}
+
+.cardDesc {
+  font-size: 15px;
+  color: #8b8b93;
+  margin-top: 10px;
+}
+
+.divider {
+  height: 2px;
+  background: #232327;
+  margin: 26px 0 18px;
+}
+
+.volumeRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.volumeLabel {
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #6e6e76;
+}
+
+.tryButton {
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #f5f5f0;
+  border: 2px solid #2c2c31;
+  background: transparent;
+  padding: 10px 16px;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.ticks {
+  display: flex;
+  gap: 6px;
+  margin-top: 14px;
+  height: 46px;
+}
+
+.tick {
+  flex: 1;
+  background: #232327;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.tick.filled {
+  background: #f5f5f0;
+}
+
+.spacer {
+  flex: 1;
+}
+
+.primaryButton {
+  padding: 26px 22px;
+  background: #c8ff00;
+  color: #0a0a0b;
+  font-size: 21px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  border: none;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+/* ---------- f14 · countdown dial ---------- */
+
+.dialHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.dialTitle {
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #6e6e76;
+}
+
+.personaSwitch {
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #f5f5f0;
+  border: none;
+  border-bottom: 2px solid #2c2c31;
+  background: transparent;
+  padding: 0 0 3px;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.dialBody {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.ring {
+  position: relative;
+  width: min(70vw, 300px);
+  height: min(70vw, 300px);
+}
+
+.ringNumber {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(90px, 30vw, 150px);
+  font-weight: 800;
+  font-stretch: 70%;
+  line-height: 1;
+  color: #ff9500;
+  font-variant-numeric: tabular-nums;
+}
+
+.dialLead {
+  font-size: 30px;
+  font-weight: 800;
+  line-height: 1.2;
+  margin-top: 34px;
+  text-align: center;
+}
+
+.dialSub {
+  font-size: 18px;
+  color: #8b8b93;
+  margin-top: 10px;
+  text-align: center;
+}
+
+.skipButton {
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #6e6e76;
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-family: inherit;
+  cursor: pointer;
+}

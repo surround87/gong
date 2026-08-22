@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics><meta name="design_doc_mode" content="canvas"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62.5..125,100..900&display=swap"><link rel="stylesheet" href="./_ds/styles.css"><script src="./_ds/_ds_bundle.js"></script><style>
+body{margin:0;background:var(--color-bg,#f3f2f2);color:var(--color-text,#201e1d);font-family:"Archivo",system-ui,sans-serif;font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:var(--color-accent,#ec3013);text-underline-offset:3px}
+a:hover{color:var(--color-accent-600,#dd2b0f)}
+</style></helmet>
+
+<section id="t2" ref="{{ radice }}" style="padding:0 0 70px">
+<div id="2a" style="max-width:1580px;margin:0 auto;padding:0 40px">
+
+  <div style="padding:60px 0 0">
+    <span class="tag tag-outline" style="border:2px solid var(--color-accent);color:var(--color-accent);font-weight:800;letter-spacing:.2em;text-transform:uppercase;font-size:10px;padding:5px 10px">Passaggio 3 · <a href="#2a" style="text-decoration:none;color:var(--color-accent)">2a</a> · Il resto del flusso</span>
+    <h1 style="font-size:76px;font-weight:800;letter-spacing:-.03em;line-height:.95;margin:24px 0 0">Sedici schermate<br>attorno al Player.</h1>
+    <p style="font-size:17px;line-height:1.6;max-width:62ch;margin:22px 0 0;color:var(--color-neutral-700);text-wrap:pretty">Input e Libreria, il parsing, la Conferma con tutti i suoi casi difficili, il Pre-flight e la Fine. <b style="color:var(--color-text)">Queste schermate non sono schermate da due metri</b>: le guardi in piedi, vestito, col telefono in mano a quaranta centimetri. Il vincolo dei due metri governa il Player e finisce lì — applicarlo qui produrrebbe liste illeggibili con quattro voci per schermo. Quello che resta valido in tutto il flusso è l'altra metà del vincolo: <b style="color:var(--color-text)">niente da configurare, un'azione per schermata, nessun form</b>. Sotto ogni mock c'è la scelta che vale la pena discutere; le tre domande aperte del brief hanno una risposta secca qui in testa.</p>
+  </div>
+
+  <hr class="hr" style="margin:44px 0 0">
+
+  <div style="display:grid;grid-template-columns:repeat(3,1fr)">
+    <div style="padding:30px 32px 30px 0;border-right:2px solid var(--color-divider)">
+      <div style="font-size:11px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--color-accent)">Domanda 1 · Input e Libreria</div>
+      <div style="font-size:23px;font-weight:800;line-height:1.22;margin:10px 0 8px">Una schermata, due densità. Non è un compromesso.</div>
+      <p style="font-size:14px;line-height:1.6;color:var(--color-neutral-700);margin:0;text-wrap:pretty">Due schermate ti costringono a una navigazione che non serve, e la libreria vuota è la schermata più triste che esista. Una sola, dove <b style="color:var(--color-text)">l'input non si sposta e non cambia natura: cambia altezza</b>. A libreria vuota occupa 470px ed è tutto quello che c'è (<a href="#f1">f1</a>); dalla prima sessione salvata si ritira a 88px e resta in cima (<a href="#f2">f2</a>). Il gesto per usarlo è identico nei due stati, quindi non c'è niente da reimparare — ed è il motivo per cui non è un compromesso: nessuno dei due utenti perde qualcosa, uno dei due guadagna spazio.</p>
+    </div>
+    <div style="padding:30px 32px;border-right:2px solid var(--color-divider)">
+      <div style="font-size:11px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--color-accent)">Domanda 3 · L'incertezza</div>
+      <div style="font-size:23px;font-weight:800;line-height:1.22;margin:10px 0 8px">Il tratteggio, più la provenienza.</div>
+      <p style="font-size:14px;line-height:1.6;color:var(--color-neutral-700);margin:0;text-wrap:pretty">Un valore dedotto sta <b style="color:var(--color-text)">su un tratteggio ambra</b> invece che su niente. Il tratteggio è la convenzione del disegno tecnico per "linea non definitiva": non è un errore, è una cosa non ancora fissata. Il testo resta bianco pieno — non si smorza mai un valore che vuoi far controllare. Ambra perché nel Player è già il colore di "preparati", non di "hai sbagliato", e perché così <b style="color:var(--color-text)">non introduco un quinto colore</b>. La cosa che lo rende fidato più del segno: toccandolo, l'app <b style="color:var(--color-text)">ti mostra la riga della tua scheda da cui l'ha tirato</b> (<a href="#f11">f11</a>). Non "fidati", ma "ecco da dove viene".</p>
+    </div>
+    <div style="padding:30px 0 30px 32px">
+      <div style="font-size:11px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--color-accent)">Domanda 4 · Coach o Tecnico</div>
+      <div style="font-size:23px;font-weight:800;line-height:1.22;margin:10px 0 8px">Una schermata la prima volta, una riga per sempre dopo.</div>
+      <p style="font-size:14px;line-height:1.6;color:var(--color-neutral-700);margin:0;text-wrap:pretty">Hai ragione che sono due prodotti diversi, quindi la prima volta hanno una schermata intera (<a href="#f13">f13</a>). Ma il modo di sceglierli non è descriverli: è <b style="color:var(--color-text)">far vedere cosa dicono</b>. Ogni scheda porta la frase reale che sentiresti a dieci secondi dalla fine, e le due frasi si scelgono da sole. Dalla seconda sessione diventa una riga toccabile nell'intestazione del Pre-flight (<a href="#f14">f14</a>): niente impostazioni, ma cambiabile in un tap nel giorno in cui non hai voglia di essere incoraggiato. Tema e tipografia identici, come da brief — cambia solo il testo.</p>
+    </div>
+  </div>
+
+  <hr class="hr" style="margin:0">
+
+  <h2 style="font-size:11px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--color-neutral-600);margin:56px 0 6px">Input e Libreria · cinque stati</h2>
+  <p style="font-size:15px;color:var(--color-neutral-700);max-width:72ch;margin:0 0 30px">Una schermata sola. Il marchio è il cerchio col punto, l'unica cosa decorativa di tutta l'app, e sta solo qui — nel Player non entra.</p>
+
+  <div style="display:flex;flex-wrap:wrap;gap:40px 34px;align-items:flex-start">
+
+    <div id="f1" style="width:390px;scroll-margin-top:24px">
+      <div style="width:390px;height:844px;position:relative;overflow:hidden;background:#0A0A0B;border:1px solid #2a2a2e;color:#F5F5F0;display:flex;flex-direction:column;padding:54px 24px 34px">
+        <div style="display:flex;align-items:center;gap:11px">
+          <svg width="26" height="26" viewBox="0 0 26 26"><circle cx="13" cy="13" r="11" fill="none" stroke="#F5F5F0" stroke-width="2.5"></circle><circle cx="13" cy="13" r="3.4" fill="#F5F5F0"></circle></svg>
+          <span style="font-size:20px;font-weight:800;letter-spacing:.36em">GONG</span>
+        </div>
+        <div style="flex:1;display:flex;flex-direction:column;justify-content:center">
+          <div style="border:3px dashed #3a3a40;padding:38px 26px 34px;min-height:400px;display:flex;flex-direction:column;justify-content:flex-end">
+            <div style="font-size:46px;font-weight:800;line-height:1;letter-spacing:-.02em">Incolla<br>la scheda.</div>
+            <div style="font-size:17px;line-height:1.5;color:#8b8b93;margin-top:18px">Il testo del PT su WhatsApp, un Excel,<br>la foto del foglio in borsa.</div>
+          </div>
+          <div style="display:flex;gap:10px;margin-top:14px">
+            <div style="flex:1;padding:22px;border:2px solid #2c2c31;font-size:15px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#F5F5F0">Scatta una foto</div>
+            <div style="flex:1;padding:22px;border:2px solid #2c2c31;font-size:15px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#F5F5F0">Scegli un file</div>
+          </div>
+        </div>
+        <div style="height:2px;background:#232327;margin-bottom:14px"></div>
+        <div style="font-size:14px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;color:#6E6E76">Libreria vuota</div>
+      </div>
+      <div style="margin-top:16px">
+        <div style="display:flex;align-items:baseline;gap:9px"><a href="#f1" style="font-size:10.5px;font-weight:800;font-family:ui-monospace,Menlo,monospace;background:var(--color-neutral-200);color:var(--color-text);padding:3px 7px;text-decoration:none">f1</a><span style="font-size:14.5px;font-weight:800">Primo accesso</span></div>
+        <div style="font-size:13px;line-height:1.55;color:var(--color-neutral-600);margin-top:7px">Tre modi di dare una scheda all'app, in ordine di frequenza reale: incollare è il caso normale ed è il campo grande; foto e file sono due bottoni.</div>
+        <div style="font-size:13px;line-height:1.55;color:var(--color-neutral-700);margin-top:9px;padding-left:12px;border-left:2px solid var(--color-accent)"><b>Non sembra un form</b> perché non c'è un'etichetta né un bordo pieno: il tratteggio dice "buttaci dentro qualcosa" e la riga sotto nomina le cose vere che la gente ha in mano.</div>
+      </div>
+    </div>
+
+    <div id="f2" style="width:390px;scroll-margin-top:24px">
+      <div style="width:390px;height:844px;position:relative;overflow:hidden;background:#0A0A0B;border:1px solid #2a2a2e;color:#F5F5F0;display:flex;flex-direction:column;padding:54px 24px 34px">
+        <div style="display:flex;align-items:center;gap:11px;margin-bottom:22px">
+          <svg width="26" height="26" viewBox="0 0 26 26"><circle cx="13" cy="13" r="11" fill="none" stroke="#F5F5F0" stroke-width="2.5"></circle><circle cx="13" cy="13" r="3.4" fill="#F5F5F0"></circle></svg>
+          <span style="font-size:20px;font-weight:800;letter-spacing:.36em">GONG</span>
+        </div>
+        <div style="border:3px dashed #3a3a40;height:88px;display:flex;align-items:center;justify-content:space-between;padding:0 20px">
+          <span style="font-size:17px;font-weight:800;color:#8b8b93">Incolla una scheda nuova</span>
+          <span style="font-size:30px;font-weight:400;color:#8b8b93;line-height:1">+</span>
+        </div>
+        <div style="height:2px;background:#232327;margin:22px 0 16px"></div>
+        <div style="font-size:14px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;color:#6E6E76;margin-bottom:14px">Libreria · 4 sessioni</div>
+        <div style="display:flex;flex-direction:column;gap:2px">
+          <div style="padding:18px 0;border-top:1px solid #232327">
+            <div style="font-size:24px;font-weight:800;line-height:1.1;color:#C8FF00">Tabata + forza A</div>
+            <div style="font-size:15px;color:#8b8b93;margin-top:5px">3 blocchi · <span data-durata="40-50 min">40-50 min</span> · ieri</div>
+          </div>
+          <div style="padding:18px 0;border-top:1px solid #232327">
+            <div style="font-size:24px;font-weight:800;line-height:1.1">Full body B</div>
+            <div style="font-size:15px;color:#8b8b93;margin-top:5px">4 blocchi · <span data-durata="50-60 min">50-60 min</span> · 4 giorni</div>
+          </div>
+          <div style="padding:18px 0;border-top:1px solid #232327">
+            <div style="font-size:24px;font-weight:800;line-height:1.1">EMOM cortissimo</div>
+            <div style="font-size:15px;color:#8b8b93;margin-top:5px">1 blocco · <span data-durata="10-12 min">10-12 min</span> · 1 settimana</div>
+          </div>
+          <div style="padding:18px 0;border-top:1px solid #232327;border-bottom:1px solid #232327">
+            <div style="font-size:24px;font-weight:800;line-height:1.1">Gambe — scheda PT</div>
+            <div style="font-size:15px;color:#8b8b93;margin-top:5px">5 blocchi · <span data-durata="55-70 min">55-70 min</span> · 2 settimane</div>
+          </div>
+        </div>
+        <div style="flex:1"></div>
+        <div style="font-size:14px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#6E6E76">Tieni premuto una sessione per rinominarla</div>
+      </div>
+      <div style="margin-top:16px">
+        <div style="display:flex;align-items:baseline;gap:9px"><a href="#f2" style="font-size:10.5px;font-weight:800;font-family:ui-monospace,Menlo,monospace;background:var(--color-neutral-200);color:var(--color-text);padding:3px 7px;text-decoration:none">f2</a><span style="font-size:14.5px;font-weight:800">Al ritorno — la stessa schermata</span></div>
+        <div style="font-size:13px;line-height:1.55;color:var(--color-neutral-600);margin-top:7px">L'input si ritira a una riga di 88px, la libreria prende il resto. Righe da 96px: sono bersagli da mano asciutta, non da pollice sudato, e va bene così.</div>
+        <div style="font-size:13px;line-height:1.55;color:var(--color-neutral-700);margin-top:9px;padding-left:12px;border-left:2px solid var(--color-accent)"><b>L'ultima usata è in lime</b> — il colore del lavoro. Nessun bottone "riprendi": il titolo è il bottone, ed è già il più grande della schermata.</div>
+      </div>
+    </div>
+
+    <div id="f3" style="width:390px;scroll-margin-top:24px">
+      <div style="width:390px;height:844px;position:relative;overflow:hidden;background:#0A0A0B;border:1px solid #2a2a2e;color:#F5F5F0">
+        <div style="position:absolute;inset:0;display:flex;flex-direction:column;padding:54px 24px 34px;opacity:.16">
+          <div style="display:flex;align-items:center;gap:11px;margin-bottom:22px"><svg width="26" height="26" viewBox="0 0 26 26"><circle cx="13" cy="13" r="11" fill="none" stroke="#F5F5F0" stroke-width="2.5"></circle><circle cx="13" cy="13" r="3.4" fill="#F5F5F0"></circle></svg><span style="font-size:20px;font-weight:800;letter-spacing:.36em">GONG</span></div>
+          <div style="border:3px dashed #3a3a40;height:88px"></div>
+          <div style="height:2px;background:#232327;margin:22px 0 16px"></div>
+          <div style="font-size:24px;font-weight:800;line-height:2.4">Tabata + forza A<br>Full body B<br>EMOM cortissimo<br>Gambe — scheda PT</div>
+        </div>
+        <div style="position:absolute;inset:16px;border:5px solid #C8FF00;background:rgba(200,255,0,.07);display:flex;flex-direction:column;justify-content:center;padding:34px">
+          <div style="font-size:54px;font-weight:800;line-height:.98;letter-spacing:-.02em;color:#C8FF00">Rilascia<br>qui.</div>
+          <div style="font-size:17px;color:#C8FF00;margin-top:18px;opacity:.8">xlsx · csv · pdf · jpg · png · testo</div>
+        </div>
+      </div>
+      <div style="margin-top:16px">
+        <div style="display:flex;align-items:baseline;gap:9px"><a href="#f3" style="font-size:10.5px;font-weight:800;font-family:ui-monospace,Menlo,monospace;background:var(--color-neutral-200);color:var(--color-text);padding:3px 7px;text-decoration:none">f3</a><span style="font-size:14.5px;font-weight:800">Drag-over</span></div>
+        <div style="font-size:13px;line-height:1.55;color:var(--color-neutral-600);margin-top:7px">Non si illumina il riquadro dell'input: si illumina <b style="color:var(--color-text)">tutta la schermata</b>, e il resto scende al 16%. Il bersaglio è il telefono intero.</div>
+        <div style="font-size:13px;line-height:1.55;color:var(--color-neutral-700);margin-top:9px;padding-left:12px;border-left:2px solid var(--color-accent)"><b>Lime perché è il colore del sì.</b> Su desktop questo stato dura mezzo secondo: deve essere leggibile col file già in movimento sotto il cursore, quindi è grosso e centrato in verticale, non un bordo sottile.</div>
+      </div>
+    </div>
+
+    <div id="f4" style="width:390px;scroll-margin-top:24px">
+      <div style="width:390px;height:844px;position:relative;overflow:hidden;background:#0A0A0B;border:1px solid #2a2a2e;color:#F5F5F0;display:flex;flex-direction:column;padding:54px 24px 34px">
+        <div style="font-size:14px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#6E6E76">Ricevuto</div>
+        <div style="height:2px;background:#232327;margin:12px 0 0"></div>
+        <div style="flex:1;display:flex;flex-direction:column;justify-content:center">
+          <div style="font-size:15px;font-family:ui-monospace,Menlo,monospace;color:#8b8b93;letter-spacing:.02em">xlsx</div>
+          <div style="font-size:32px;font-weight:800;line-height:1.12;margin-top:8px;word-break:break-word">scheda-marzo-<br>ciclo2.xlsx</div>
+          <div style="font-size:16px;color:#8b8b93;margin-top:10px">24 KB · 3 fogli</div>
+          <div style="height:1px;background:#232327;margin:26px 0"></div>
+          <div style="font-size:16px;line-height:1.5;color:#8b8b93">Non l'ho ancora letto. Nessuna scheda<br>lascia questo telefono.</div>
+        </div>
+        <div style="padding:26px 22px;background:#C8FF00;color:#0A0A0B;font-size:19px;font-weight:800;letter-spacing:.12em;text-transform:uppercase">Leggi la scheda</div>
+        <div style="padding:22px;font-size:15px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#6E6E76">Cambia file</div>
+      </div>
+      <div style="margin-top:16px">
+        <div style="display:flex;align-items:baseline;gap:9px"><a href="#f4" style="font-size:10.5px;font-weight:800;font-family:ui-monospace,Menlo,monospace;background:var(--color-neutral-200);color:var(--color-text);padding:3px 7px;text-decoration:none">f4</a><span style="font-size:14.5px;font-weight:800">File caricato</span></div>
+        <div style="font-size:13px;line-height:1.55;color:var(--color-neutral-600);margin-top:7px">Una pausa di un tap fra il caricamento e la lettura. Serve perché su mobile si sbaglia file, e perché "3 fogli" è un'informazione che cambia cosa ti aspetti.</div>
+        <div style="font-size:13px;line-height:1.55;color:var(--color-neutral-700);margin-top:9px;padding-left:12px;border-left:2px solid var(--color-accent)"><b>La riga sulla privacy sta qui</b> e in nessun altro posto: è l'unico momento in cui la domanda "dove finisce la mia scheda" si presenta da sola. Detta una volta, senza una schermata dedicata.</div>
+      </div>
+    </div>
+
+    <div id="f5" style="width:390px;scroll-margin-top:24px">
+      <div style="width:390px;height:844px;position:relative;overflow:hidden;background:#0A0A0B;border:1px solid #2a2a2e;color:#F5F5F0;display:flex;flex-direction:column;padding:54px 24px 34px">
+        <div style="font-size:14px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#6E6E76">Lettura fallita</div>
+        <div style="height:2px;background:#232327;margin:12px 0 0"></div>
+        <div style="flex:1;display:flex;flex-direction:column;justify-content:center">
+          <div style="font-size:40px;font-weight:800;line-height:1.04;letter-spacing:-.02em">Qui dentro non<br>c'è un allenamento.</div>
+          <div style="font-size:17px;line-height:1.5;color:#8b8b93;margin-top:16px">Non ho trovato tempi, ripetizioni o nomi<br>di esercizi. Questo è quello che ho letto:</div>
+          <div style="border:1px solid #232327;padding:14px 16px;margin-top:18px;font-family:ui-monospace,Menlo,monospace;font-size:13.5px;line-height:1.65;color:#6E6E76">Buongiorno! Allora ci vediamo<br>giovedì in palestra alle 18, ti<br>porto la scheda nuova stampata…</div>
+          <div style="font-size:16px;line-height:1.5;color:#8b8b93;margin-top:20px">Sembra un messaggio, non una scheda.</div>
+        </div>
+        <div style="padding:26px 22px;border:2px solid #F5F5F0;font-size:19px;font-weight:800;letter-spacing:.12em;text-transform:uppercase">Incolla qualcos'altro</div>
+        <div style="padding:22px;font-size:15px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#6E6E76">Scrivo io i blocchi a mano</div>
+      </div>
+      <div style="margin-top:16px">
+        <div style="display:flex;align-items:baseline;gap:9px"><a href="#f5" style="font-size:10.5px;font-weight:800;font-family:ui-monospace,Menlo,monospace;background:var(--color-neutral-200);color:var(--color-text);padding:3px 7px;text-decoration:none">f5</a><span style="font-size:14.5px;font-weight:800">Errore di lettura</span></div>
+        <div style="font-size:13px;line-height:1.55;color:var(--color-neutral-600);margin-top:7px">Nessun colore. Il rosso è escluso dal sistema e un errore non merita né lime né ambra: resta bianco su nero, come una constatazione.</div>
+        <div style="font-size:13px;line-height:1.55;color:var(--color-neutral-700);margin-top:9px;padding-left:12px;border-left:2px solid var(--color-accent)"><b>Restituire il testo letto</b> è quello che trasforma l'errore in una diagnosi: nove volte su dieci l'utente riconosce di aver incollato la conversazione sbagliata. Il "sembra un messaggio" è il parser che dice cosa ha visto, non una scusa.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <h2 style="font-size:11px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--color-neutral-600);margin:64px 0 6px">Parsing</h2>
+  <p style="font-size:15px;color:var(--color-neutral-700);max-width:72ch;margin:0 0 30px">Tre secondi. Nessuno spinner: si vede la tua scheda che si smonta.</p>
+
+  <div style="display:flex;flex-wrap:wrap;gap:40px 34px;align-items:flex-start">
+
+    <div id="f6" style="width:390px;scroll-margin-top:24px">
+      <div style="width:390px;height:844px;position:relative;overflow:hidden;background:#0A0A0B;border:1px solid #2a2a2e;color:#F5F5F0;display:flex;flex-direction:column;padding:54px 24px 34px">
+        <div style="display:flex;justify-content:space-between;align-items:baseline">
+          <span style="font-size:14px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#C8FF00">Sto leggendo</span>
+          <span style="font-size:14px;font-family:ui-monospace,Menlo,monospace;color:#6E6E76">riga 14/38</span>
+        </div>
+        <div style="height:2px;background:#232327;margin:12px 0 0"></div>
+        <div style="padding:20px 0 6px;font-family:ui-monospace,Menlo,monospace;font-size:13.5px;line-height:1.9">
+          <div style="color:#3f3f45;text-decoration:line-through">A1 Panca piana 4x8 rec 90"</div>
+          <div style="color:#3f3f45;text-decoration:line-through">A2 Rematore 4x10 rec 90"</div>
+          <div style="color:#F5F5F0;border-left:3px solid #C8FF00;padding-left:9px;margin-left:-12px">TABATA: swing/burpee 8 giri</div>
+          <div style="color:#6E6E76">B1 Affondi camminati 3x20</div>
+          <div style="color:#6E6E76">B2 Plank 3x45"</div>
+        </div>
+        <div style="height:1px;background:#232327;margin:12px 0 18px"></div>
+        <div style="font-size:13px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#6E6E76;margin-bottom:12px">Trovato finora</div>
+        <div style="display:flex;flex-direction:column;gap:11px">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid #232327;padding-bottom:9px">
+            <span style="font-size:22px;font-weight:800">A · Forza</span><span style="font-size:16px;color:#8b8b93;font-family:ui-monospace,Menlo,monospace">2 es · 4×8</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid #232327;padding-bottom:9px">
+            <span style="font-size:22px;font-weight:800;color:#C8FF00">Tabata</span><span style="font-size:16px;color:#C8FF00;font-family:ui-monospace,Menlo,monospace">8 × 20/10</span>
+          </div>
+        </div>
+        <div style="flex:1"></div>
+        <div style="font-size:15px;color:#6E6E76;line-height:1.5">Le righe barrate sono già capite.<br>Tocca per fermarti e correggere subito.</div>
+        <div style="position:relative;height:9px;background:#1c1c1f;margin-top:18px">
+          <div style="position:absolute;left:0;top:0;bottom:0;width:37%;background:#C8FF00"></div>
+          <div style="position:absolute;inset:0;background:repeating-linear-gradient(90deg, transparent 0 19px, #0A0A0B 19px 21px)"></div>
+        </div>
+      </div>
+      <div style="margin-top:16px">
+        <div style="display:flex;align-items:baseline;gap:9px"><a href="#f6" style="font-size:10.5px;font-weight:800;font-family:ui-monospace,Menlo,monospace;background:var(--color-neutral-200);color:var(--color-text);padding:3px 7px;text-decoration:none">f6</a><span style="font-size:14.5px;font-weight:800">Il parser al lavoro</span></div>
+        <div style="font-size:13px;line-height:1.55;color:var(--color-neutral-600);margin-top:7px">Sopra il testo grezzo che scorre e si barra riga per riga, sotto i blocchi che si formano. Il cursore lime sta sulla riga in lettura.</div>
+        <div style="font-size:13px;line-height:1.55;color:var(--color-neutral-700);margin-top:9px;padding-left:12px;border-left:2px solid var(--color-accent)"><b>La competenza si dimostra mostrando il lavoro</b>, non annunciandolo. Le stesse tacche del Player fanno da avanzamento: è la prima volta che l'utente le vede, e quando le ritroverà nel Player le avrà già imparate.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <h2 style="font-size:11px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--color-neutral-600);margin:64px 0 6px">Conferma · sei casi</h2>
+  <p style="font-size:15px;color:var(--color-neutral-700);max-width:72ch;margin:0 0 30px">Correzione, non costruzione. Un solo bottone che porta avanti, e tutto il resto è la sessione da guardare.</p>
+
+  <div style="display:flex;flex-wrap:wrap;gap:40px 34px;align-items:flex-start">
+
+    <div id="f7" style="width:390px;scroll-margin-top:24px">
+      <div style="width:390px;height:844px;position:relative;overflow:hidden;background:#0A0A0B;border:1px solid #2a2a2e;color:#F5F5F0;display:flex;flex-direction:column;padding:54px 24px 34px">
+        <div style="font-size:14px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#6E6E76">Letta tutta</div>
+        <div style="font-size:34px;font-weight:800;line-height:1.08;margin-top:10px;border-bottom:2px solid #3a3a40;padding-bottom:8px">Tabata + forza A</div>
+        <div style="display:flex;align-items:baseline;gap:12px;margin-top:18px">
+          <span style="font-size:52px;font-weight:800;font-stretch:75%;line-height:1" data-durata="40-50">40-50</span>
+          <span style="font-size:20px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#8b8b93">min stimati</span>
+        </div>
+        <div style="height:2px;background:#232327;margin:20px 0 0"></div>
+        <div style="flex:1;display:flex;flex-direction:column">
+          <div style="padding:18px 0;border-bottom:1px solid #232327">
+            <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-size:24px;font-weight:800">A · Forza</span><span style="font-size:17px;font-family:ui-monospace,Menlo,monospace;color:#8b8b93">4×8</span></div>
+            <div style="font-size:16px;color:#8b8b93;margin-top:5px">Panca piana · Rematore · rec 90"</div>
+          </div>
+          <div style="padding:18px 0;border-bottom:1px solid #232327">
+            <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-size:24px;font-weight:800">B · Tabata</span><span style="font-size:17px;font-family:ui-monospace,Menlo,monospace;color:#8b8b93">8 × 20/10</span></div>
+            <div style="font-size:16px;color:#8b8b93;margin-top:5px">Kettlebell swing · Burpee</div>
+          </div>
+          <div style="padding:18px 0;border-bottom:1px solid #232327">
+            <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-size:24px;font-weight:800">C · Core</span><span style="font-size:17px;font-family:ui-monospace,Menlo,monospace;color:#8b8b93">3×45"</span></div>
+            <div style="font-size:16px;color:#8b8b93;margin-top:5px">Plank · rec 30"</div>
+          </div>
+          <div style="font-size:15px;color:#6E6E76;margin-top:16px">Tocca qualunque riga per correggerla.</div>
+        </div>
+        <div style="padding:30px 22px;background:#C8FF00;color:#0A0A0B;font-size:23px;font-weight:800;letter-spacing:.14em;text-transform:uppercase">Avvia</div>
+      </div>
+      <div style="margin-top:16px">
+        <div style="display:flex;align-items:baseline;gap:9px"><a href="#f7" style="font-size:10.5px;font-weight:800;font-family:ui-monospace,Menlo,monospace;background:var(--color-neutral-200);color:var(--color-text);padding:3px 7px;text-decoration:none">f7</a><span style="font-size:14.5px;font-weight:800">Sessione pulita</span></div>
+        <div style="font-size:13px;line-height:1.55;color:var(--color-neutral-600);margin-top:7px">Zero tratteggi: tutto letto, niente dedotto. È il caso da tenere come riferimento, perché è quello in cui l'incertezza <b style="color:var(--color-text)">non deve occupare spazio</b>.</div>
+        <div style="font-size:13px;line-height:1.55;color:var(--color-neutral-700);margin-top:9px;padding-left:12px;border-left:2px solid var(--color-accent)"><b>La durata è un intervallo</b> e i due numeri sono grandi quanto la promessa che portano. Il titolo ha un sottolineato spesso: è l'unico campo di testo dell'app, e si vede che è toccabile senza dirlo.</div>
+      </div>
+    </div>
+
+    <div id="f8" style="width:390px;scroll-margin-top:24px">
+      <div style="width:390px;height:844px;position:relative;overflow:hidden;background:#0A0A0B;border:1px solid #2a2a2e;color:#F5F5F0;display:flex;flex-direction:column;padding:54px 24px 34px">
+        <div style="display:flex;justify-content:space-between;align-items:baseline">
+          <span style="font-size:14px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#6E6E76">Letta tutta</span>
+          <span style="font-size:14px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#FF9500;border-bottom:3px dashed #FF9500;padding-bottom:2px">3 dedotti</span>
+        </div>
+        <div style="font-size:34px;font-weight:800;line-height:1.08;margin-top:10px;border-bottom:2px solid #3a3a40;padding-bottom:8px">Gambe — scheda PT</div>
+        <div style="display:flex;align-items:baseline;gap:12px;margin-top:18px">
+          <span style="font-size:52px;font-weight:800;font-stretch:75%;line-height:1;border-bottom:3px dashed var(--inc-color,#FF9500);border-bottom-style:var(--inc-style,dashed);padding-bottom:3px" data-durata="45-60">45-60</span>
+          <span style="font-size:20px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#8b8b93">min stimati</span>
+        </div>
+        <div style="height:2px;background:#232327;margin:20px 0 0"></div>
+        <div style="flex:1;display:flex;flex-direction:column">
+          <div style="padding:18px 0;border-bottom:1px solid #232327">
+            <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-size:24px;font-weight:800">A · Squat</span><span style="font-size:17px;font-family:ui-monospace,Menlo,monospace;color:#8b8b93">5×5</span></div>
+            <div style="font-size:16px;color:#8b8b93;margin-top:5px">rec <span style="color:#F5F5F0;border-bottom:3px dashed var(--inc-color,#FF9500);border-bottom-style:var(--inc-style,dashed);padding-bottom:2px">180"</span><span data-inc-tag style="display:var(--inc-tag,none);font-size:11px;font-weight:800;letter-spacing:.1em;color:#FF9500;border:2px solid #FF9500;padding:1px 5px;margin-left:7px">DEDOTTO</span></div>
+            <div data-prov style="display:var(--prov,block);font-size:14px;font-family:ui-monospace,Menlo,monospace;color:#6E6E76;margin-top:6px">da «5x5 rec lungo»</div>
+          </div>
+          <div style="padding:18px 0;border-bottom:1px solid #232327">
+            <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-size:24px;font-weight:800">B · Affondi</span><span style="font-size:17px;font-family:ui-monospace,Menlo,monospace;color:#F5F5F0;border-bottom:3px dashed var(--inc-color,#FF9500);border-bottom-style:var(--inc-style,dashed);padding-bottom:2px">3×20</span></div>
+            <div style="font-size:16px;color:#8b8b93;margin-top:5px">per gamba · rec 60"</div>
+            <div data-prov style="display:var(--prov,block);font-size:14px;font-family:ui-monospace,Menlo,monospace;color:#6E6E76;margin-top:6px">da «affondi 3 serie x20 pg»</div>
+          </div>
+          <div style="padding:18px 0;border-bottom:1px solid #232327">
+            <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-size:24px;font-weight:800;border-bottom:3px dashed var(--inc-color,#FF9500);border-bottom-style:var(--inc-style,dashed);padding-bottom:2px">C · Core</span><span style="font-size:17px;font-family:ui-monospace,Menlo,monospace;color:#8b8b93">3×45"</span></div>
+            <div style="font-size:16px;color:#8b8b93;margin-top:5px">Plank · nome del blocco dedotto</div>
+          </div>
+          <div style="font-size:15px;line-height:1.5;color:#8b8b93;margin-top:16px">Il tratteggio vuol dire che l'ho ricavato io.<br>Toccalo per vedere da dove.</div>
+        </div>
+        <div style="padding:30px 22px;background:#C8FF00;color:#0A0A0B;font-size:23px;font-weight:800;letter-spacing:.14em;text-transform:uppercase">Avvia</div>
+      </div>
+      <div style="margin-top:16px">
+        <div style="display:flex;align-items:baseline;gap:9px"><a href="#f8" style="font-size:10.5px;font-weight:800;font-family:ui-monospace,Menlo,monospace;background:var(--color-neutral-200);color:var(--color-text);padding:3px 7px;text-decoration:none">f8</a><span style="font-size:14.5px;font-weight:800">Tre campi dedotti</span></div>
+        <div style="font-size:13px;line-height:1.55;color:var(--color-neutral-600);margin-top:7px">Il segno è sempre lo stesso e sta <b style="color:var(--color-text)">sotto il valore preciso</b>, non attorno al blocco: così sai quale numero controllare, non solo quale riga.</div>
+        <div style="font-size:13px;line-height:1.55;color:var(--color-neutral-700);margin-top:9px;padding-left:12px;border-left:2px solid var(--color-accent)"><b>Avvia resta pieno e lime.</b> Se lo indebolissi finché non confermi i dedotti, l'app si starebbe scusando: ha fatto un buon lavoro, e la strada per allenarsi non va ostruita. Il contatore in alto è l'unica cosa che chiede attenzione. Nei tweak: tratteggio bianco e variante con etichetta.</div>
+      </div>
+    </div>
+
+    <div id="f9" style="width:390px;scroll-margin-top:24px">
+      <div style="width:390px;height:844px;position:relative;overflow:hidden;background:#0A0A0B;border:1px solid #2a2a2e;color:#F5F5F0;display:flex;flex-direction:column;padding:54px 24px 34px">
+        <div style="font-size:14px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#6E6E76">Serve una scelta</div>
+        <div style="height:2px;background:#232327;margin:12px 0 0"></div>
+        <div style="font-size:36px;font-weight:800;line-height:1.06;letter-spacing:-.02em;margin-top:22px">Ho trovato tre<br>allenamenti.<br>Quale facciamo?</div>
+        <div style="display:flex;flex-direction:column;margin-top:26px">
+          <div style="padding:22px 0;border-top:1px solid #232327">
+            <div style="font-size:26px;font-weight:800;line-height:1.1">Giorno A — Spinta</div>
+            <div style="font-size:16px;color:#8b8b93;margin-top:5px">3 blocchi · <span data-durata="40-50 min">40-50 min</span></div>
+          </div>
+          <div style="padding:22px 0;border-top:1px solid #232327">
+            <div style="font-size:26px;font-weight:800;line-height:1.1">Giorno B — Trazione</div>
+            <div style="font-size:16px;color:#8b8b93;margin-top:5px">3 blocchi · <span data-durata="45-55 min">45-55 min</span></div>
+          </div>
+          <div style="padding:22px 0;border-top:1px solid #232327;border-bottom:1px solid #232327">
+            <div style="font-size:26px;font-weight:800;line-height:1.1">Giorno C — Gambe</div>
+            <div style="font-size:16px;color:#8b8b93;margin-top:5px">4 blocchi · <span data-durata="50-65 min">50-65 min</span></div>
+          </div>
+        </div>
+        <div style="flex:1"></div>
+        <div style="font-size:16px;line-height:1.5;color:#8b8b93">Le altre due restano in libreria.<br>Non devi ricaricare niente domani.</div>
+      </div>
+      <div style="margin-top:16px">
+        <div style="display:flex;align-items:baseline;gap:9px"><a href="#f9" style="font-size:10.5px;font-weight:800;font-family:ui-monospace,Menlo,monospace;background:var(--color-neutral-200);color:var(--color-text);padding:3px 7px;text-decoration:none">f9</a><span style="font-size:14.5px;font-weight:800">Il parser chiede</span></div>
+        <div style="font-size:13px;line-height:1.55;color:var(--color-neutral-600);margin-top:7px">Nessun bottone di conferma: <b style="color:var(--color-text)">la scelta è il tap</b>. Nessuna opzione preselezionata — su tre giorni non c'è un default onesto. Vale identico per "questa scheda ha 4 settimane, quale?".</div>
+        <div style="font-size:13px;line-height:1.55;color:var(--color-neutral-700);margin-top:9px;padding-left:12px;border-left:2px solid var(--color-accent)"><b>La riga in fondo è la più importante</b>: toglie la paura di perdere le altre due, che è il vero motivo per cui questa schermata blocca la gente. Tre casi su nove nei tuoi test — non è un caso limite, è un caso normale.</div>
+      </div>
+    </div>
+
+    <div id="f10" style="width:390px;scroll-margin-top:24px">
+      <div style="width:390px;height:844px;position:relative;overflow:hidden;background:#0A0A0B;border:1px solid #2a2a2e;color:#F5F5F0;display:flex;flex-direction:column;padding:54px 24px 34px">
+        <div style="font-size:14px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#6E6E76">Un blocco non lo guido</div>
+        <div style="height:2px;background:#232327;margin:12px 0 0"></div>
+        <div style="flex:1;display:flex;flex-direction:column;justify-content:center">
+          <div style="font-size:38px;font-weight:800;line-height:1.05;letter-spacing:-.02em">«Fran» va<br>a cronometro<br>libero.</div>
+          <div style="font-size:17px;line-height:1.5;color:#8b8b93;margin-top:16px">Nessun tempo da scandire: vai il più veloce<br>che puoi e il tempo finale è il risultato.<br>GONG oggi non sa fare da giudice.</div>
+          <div style="height:1px;background:#232327;margin:24px 0"></div>
+          <div style="font-size:19px;font-weight:800;line-height:1.35">Gli altri due blocchi li guido<br>normalmente.</div>
+          <div style="font-size:16px;color:#8b8b93;margin-top:8px">A · Riscaldamento · B · Core</div>
+        </div>
+        <div style="padding:26px 22px;background:#C8FF00;color:#0A0A0B;font-size:19px;font-weight:800;letter-spacing:.12em;text-transform:uppercase">Fammi da cronometro su Fran</div>
+        <div style="padding:22px;border:2px solid #2c2c31;font-size:16px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;margin-top:10px">Guida solo gli altri due</div>
+      </div>
+      <div style="margin-top:16px">
+        <div style="display:flex;align-items:baseline;gap:9px"><a href="#f10" style="font-size:10.5px;font-weight:800;font-family:ui-monospace,Menlo,monospace;background:var(--color-neutral-200);color:var(--color-text);padding:3px 7px;text-decoration:none">f10</a><span style="font-size:14.5px;font-weight:800">Modalità non supportata</span></div>
+        <div style="font-size:13px;line-height:1.55;color:var(--color-neutral-600);margin-top:7px">Il no è al centro, in grande, e non si nasconde. Poi due strade: un cronometro che sale — cosa che l'app sa già fare — o saltare il blocco.</div>
+        <div style="font-size:13px;line-height:1.55;color:var(--color-neutral-700);margin-top:9px;padding-left:12px;border-left:2px solid var(--color-accent)"><b>Il vicolo cieco si evita spiegando perché</b>, non addolcendo. "Non so fare da giudice" dice cosa manca al prodotto e non insinua che la tua scheda sia sbagliata. E la riga sui blocchi che invece funzionano riporta la sessione al centro: il no riguarda un pezzo, non la serata.</div>
+      </div>
+    </div>
+
+    <div id="f11" style="width:390px;scroll-margin-top:24px">
+      <div style="width:390px;height:844px;position:relative;overflow:hidden;background:#0A0A0B;border:1px solid #2a2a2e;color:#F5F5F0">
+        <div style="position:absolute;inset:0;display:flex;flex-direction:column;padding:54px 24px 34px;opacity:.2">
+          <div style="font-size:34px;font-weight:800;line-height:1.08;border-bottom:2px solid #3a3a40;padding-bottom:8px">Gambe — scheda PT</div>
+          <div style="font-size:52px;font-weight:800;font-stretch:75%;margin-top:18px">45-60</div>
+          <div style="height:2px;background:#232327;margin:20px 0 18px"></div>
+          <div style="font-size:24px;font-weight:800;line-height:2">A · Squat<br>B · Affondi<br>C · Core</div>
+        </div>
+        <div style="position:absolute;left:0;right:0;bottom:0;background:#0A0A0B;border-top:3px solid #FF9500;padding:26px 24px 34px">
+          <div style="font-size:14px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#FF9500">Dedotto · A · Squat</div>
+          <div style="font-size:26px;font-weight:800;line-height:1.2;margin-top:12px">Recupero fra le serie</div>
+          <div style="font-family:ui-monospace,Menlo,monospace;font-size:15px;line-height:1.6;color:#8b8b93;margin-top:10px;border-left:3px solid #FF9500;padding-left:11px">nella tua scheda:<br>«A) Squat 5x5 rec lungo»</div>
+          <div style="font-size:16px;line-height:1.5;color:#8b8b93;margin-top:12px">"lungo" su una 5×5 di squat, per me, è 180 secondi.</div>
+          <div style="display:flex;align-items:center;gap:14px;margin-top:22px">
+            <div style="width:84px;height:84px;border:2px solid #F5F5F0;display:flex;align-items:center;justify-content:center;font-size:38px;font-weight:400;line-height:1">−</div>
+            <div style="flex:1;text-align:center"><span style="font-size:76px;font-weight:800;font-stretch:70%;line-height:1;font-variant-numeric:tabular-nums">180</span><span style="font-size:22px;font-weight:800;color:#8b8b93;margin-left:6px">sec</span></div>
+            <div style="width:84px;height:84px;border:2px solid #F5F5F0;display:flex;align-items:center;justify-content:center;font-size:38px;font-weight:400;line-height:1">+</div>
+          </div>
+          <div style="padding:24px 22px;background:#F5F5F0;color:#0A0A0B;font-size:19px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;margin-top:22px">Confermo 180"</div>
+        </div>
+      </div>
+      <div style="margin-top:16px">
+        <div style="display:flex;align-items:baseline;gap:9px"><a href="#f11" style="font-size:10.5px;font-weight:800;font-family:ui-monospace,Menlo,monospace;background:var(--color-neutral-200);color:var(--color-text);padding:3px 7px;text-decoration:none">f11</a><span style="font-size:14.5px;font-weight:800">Correzione di un dedotto</span></div>
+        <div style="font-size:13px;line-height:1.55;color:var(--color-neutral-600);margin-top:7px">Un pannello dal basso, angoli dritti, il bordo ambra a ripetere di cosa si sta parlando. Bersagli da 84px per il più e il meno.</div>
+        <div style="font-size:13px;line-height:1.55;color:var(--color-neutral-700);margin-top:9px;padding-left:12px;border-left:2px solid var(--color-accent)"><b>Questa è la risposta vera alla domanda 3.</b> Il tratteggio segnala, ma è la citazione della tua riga — «rec lungo» — che rende la deduzione verificabile in due secondi. Confermare è un tap, e il bottone dice il valore, non "OK".</div>
+      </div>
+    </div>
+
+    <div id="f12" style="width:390px;scroll-margin-top:24px">
+      <div style="width:390px;height:844px;position:relative;overflow:hidden;background:#0A0A0B;border:1px solid #2a2a2e;color:#F5F5F0;display:flex;flex-direction:column;padding:54px 24px 0">
+        <div style="display:flex;justify-content:space-between;align-items:baseline">
+          <span style="font-size:14px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#6E6E76">12 blocchi</span>
+          <span style="font-size:14px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#FF9500;border-bottom:3px dashed #FF9500;padding-bottom:2px">5 dedotti</span>
+        </div>
+        <div style="font-size:25px;font-weight:800;line-height:1.14;margin-top:10px;border-bottom:2px solid #3a3a40;padding-bottom:8px">Scheda forza + metabolico settimana 4 — mesociclo autunnale</div>
+        <div style="display:flex;align-items:baseline;gap:10px;margin-top:14px">
+          <span style="font-size:40px;font-weight:800;font-stretch:75%;line-height:1" data-durata="70-90">70-90</span>
+          <span style="font-size:17px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#8b8b93">min stimati</span>
+        </div>
+        <div style="height:2px;background:#232327;margin:16px 0 0"></div>
+        <div style="flex:1;overflow:hidden;position:relative">
+          <div style="font-size:20px;line-height:2.5">
+            <div style="display:flex;justify-content:space-between;border-bottom:1px solid #232327"><span style="font-weight:800">A1 · Squat</span><span style="font-family:ui-monospace,Menlo,monospace;color:#8b8b93">5×5</span></div>
+            <div style="display:flex;justify-content:space-between;border-bottom:1px solid #232327"><span style="font-weight:800">A2 · Stacco</span><span style="font-family:ui-monospace,Menlo,monospace;color:#8b8b93">5×3</span></div>
+            <div style="display:flex;justify-content:space-between;border-bottom:1px solid #232327"><span style="font-weight:800">B1 · Panca</span><span style="font-family:ui-monospace,Menlo,monospace;color:#8b8b93">4×8</span></div>
+            <div style="display:flex;justify-content:space-between;border-bottom:1px solid #232327"><span style="font-weight:800">B2 · Rematore</span><span style="font-family:ui-monospace,Menlo,monospace;color:#F5F5F0;border-bottom:3px dashed #FF9500">4×10</span></div>
+            <div style="display:flex;justify-content:space-between;border-bottom:1px solid #232327"><span style="font-weight:800">C1 · Military</span><span style="font-family:ui-monospace,Menlo,monospace;color:#8b8b93">3×10</span></div>
+            <div style="display:flex;justify-content:space-between;border-bottom:1px solid #232327"><span style="font-weight:800">C2 · Trazioni</span><span style="font-family:ui-monospace,Menlo,monospace;color:#8b8b93">3×6</span></div>
+            <div style="display:flex;justify-content:space-between;border-bottom:1px solid #232327"><span style="font-weight:800">D · Tabata</span><span style="font-family:ui-monospace,Menlo,monospace;color:#8b8b93">8×20/10</span></div>
+            <div style="display:flex;justify-content:space-between;border-bottom:1px solid #232327"><span style="font-weight:800">E · Core</span><span style="font-family:ui-monospace,Menlo,monospace;color:#8b8b93">3×45"</span></div>
+          </div>
+          <div style="position:absolute;left:0;right:0;bottom:0;height:150px;background:linear-gradient(to top,#0A0A0B 30%,transparent)"></div>
+          <div style="position:absolute;left:0;bottom:26px;font-size:16px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#6E6E76">↓ altri 4 blocchi</div>
+        </div>
+        <div style="padding:30px 22px;background:#C8FF00;color:#0A0A0B;font-size:23px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;margin:0 -24px">Avvia</div>
+      </div>
+      <div style="margin-top:16px">
+        <div style="display:flex;align-items:baseline;gap:9px"><a href="#f12" style="font-size:10.5px;font-weight:800;font-family:ui-monospace,Menlo,monospace;background:var(--color-neutral-200);color:var(--color-text);padding:3px 7px;text-decoration:none">f12</a><span style="font-size:14.5px;font-weight:800">Il caso peggiore</span></div>
+        <div style="font-size:13px;line-height:1.55;color:var(--color-neutral-600);margin-top:7px">Titolo di 59 caratteri su tre righe a corpo ridotto, 12 blocchi, 5 dedotti. Le righe diventano una riga sola ciascuna: nome e schema, niente esercizi.</div>
+        <div style="font-size:13px;line-height:1.55;color:var(--color-neutral-700);margin-top:9px;padding-left:12px;border-left:2px solid var(--color-accent)"><b>Avvia è ancorato a fondo schermo</b> e va a tutta larghezza: con 12 blocchi non puoi scrollare per trovarlo. Il conteggio "altri 4 blocchi" dice quanto manca, così non serve scorrere per sapere se vale la pena.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <h2 style="font-size:11px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--color-neutral-600);margin:64px 0 6px">Pre-flight e Fine</h2>
+  <p style="font-size:15px;color:var(--color-neutral-700);max-width:72ch;margin:0 0 30px">Le due schermate in cui il cerchio del marchio smette di essere un logo e diventa il quadrante, poi si chiude.</p>
+
+  <div style="display:flex;flex-wrap:wrap;gap:40px 34px;align-items:flex-start">
+
+    <div id="f13" style="width:390px;scroll-margin-top:24px">
+      <div style="width:390px;height:844px;position:relative;overflow:hidden;background:#0A0A0B;border:1px solid #2a2a2e;color:#F5F5F0;display:flex;flex-direction:column;padding:54px 24px 34px">
+        <div style="font-size:14px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#6E6E76">Solo questa volta</div>
+        <div style="font-size:34px;font-weight:800;line-height:1.08;margin-top:10px">Chi ti parla<br>nell'orecchio?</div>
+        <div style="display:flex;flex-direction:column;gap:14px;margin-top:26px">
+          <div style="border:3px solid #F5F5F0;padding:22px 20px">
+            <div style="font-size:15px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:#F5F5F0">Coach</div>
+            <div style="font-size:25px;font-weight:800;line-height:1.22;margin-top:10px">«Ultimi dieci! Non<br>molli adesso, tieni!»</div>
+            <div style="font-size:15px;color:#8b8b93;margin-top:10px">Ti spinge. Parla anche quando non serve.</div>
+          </div>
+          <div style="border:2px solid #2c2c31;padding:22px 20px">
+            <div style="font-size:15px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:#8b8b93">Tecnico</div>
+            <div style="font-size:25px;font-weight:800;line-height:1.22;margin-top:10px">«Dieci secondi.<br>Poi riposo.»</div>
+            <div style="font-size:15px;color:#8b8b93;margin-top:10px">Dice i numeri. Tace il resto del tempo.</div>
+          </div>
+        </div>
+        <div style="height:2px;background:#232327;margin:26px 0 18px"></div>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:15px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#6E6E76">Volume</span>
+          <span style="font-size:15px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#F5F5F0;border:2px solid #2c2c31;padding:10px 16px">Prova</span>
+        </div>
+        <div style="display:flex;gap:6px;margin-top:14px;height:46px">
+          <div style="flex:1;background:#F5F5F0"></div><div style="flex:1;background:#F5F5F0"></div><div style="flex:1;background:#F5F5F0"></div><div style="flex:1;background:#F5F5F0"></div><div style="flex:1;background:#232327"></div><div style="flex:1;background:#232327"></div>
+        </div>
+        <div style="flex:1"></div>
+        <div style="padding:26px 22px;background:#C8FF00;color:#0A0A0B;font-size:21px;font-weight:800;letter-spacing:.14em;text-transform:uppercase">Continua</div>
+      </div>
+      <div style="margin-top:16px">
+        <div style="display:flex;align-items:baseline;gap:9px"><a href="#f13" style="font-size:10.5px;font-weight:800;font-family:ui-monospace,Menlo,monospace;background:var(--color-neutral-200);color:var(--color-text);padding:3px 7px;text-decoration:none">f13</a><span style="font-size:14.5px;font-weight:800">Scelta della voce · prima volta</span></div>
+        <div style="font-size:13px;line-height:1.55;color:var(--color-neutral-600);margin-top:7px">Ogni scheda porta la frase vera che sentiresti a dieci secondi dalla fine. Colori e tipografia identici: cambia solo il testo, come da brief.</div>
+        <div style="font-size:13px;line-height:1.55;color:var(--color-neutral-700);margin-top:9px;padding-left:12px;border-left:2px solid var(--color-accent)"><b>Il volume si prova, non si immagina.</b> Sei tacche e un bottone che pronuncia una frase: in palestra col rumore di fondo è l'unico modo di regolarlo che funziona. La selezione è il bordo spesso, non un pallino.</div>
+      </div>
+    </div>
+
+    <div id="f14" style="width:390px;scroll-margin-top:24px">
+      <div style="width:390px;height:844px;position:relative;overflow:hidden;background:#0A0A0B;border:1px solid #2a2a2e;color:#F5F5F0;display:flex;flex-direction:column;padding:54px 24px 34px">
+        <div style="display:flex;justify-content:space-between;align-items:baseline">
+          <span style="font-size:15px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#6E6E76">Tabata + forza A</span>
+          <span style="font-size:15px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#F5F5F0;border-bottom:2px solid #2c2c31;padding-bottom:3px">Tecnico</span>
+        </div>
+        <div style="height:2px;background:#232327;margin-top:12px"></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center">
+          <div style="position:relative;width:300px;height:300px">
+            <svg width="300" height="300" viewBox="0 0 300 300"><circle cx="150" cy="150" r="138" fill="none" stroke="#232327" stroke-width="12"></circle><circle cx="150" cy="150" r="138" fill="none" stroke="#FF9500" stroke-width="12" stroke-dasharray="867" stroke-dashoffset="289" transform="rotate(-90 150 150)"></circle></svg>
+            <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:150px;font-weight:800;font-stretch:70%;line-height:1;color:#FF9500;font-variant-numeric:tabular-nums">3</div>
+          </div>
+          <div style="font-size:30px;font-weight:800;line-height:1.2;margin-top:34px;text-align:center">Appoggia il telefono.</div>
+          <div style="font-size:18px;color:#8b8b93;margin-top:10px;text-align:center">Primo: kettlebell swing, 20 secondi.</div>
+        </div>
+        <div style="height:2px;background:#232327;margin-bottom:16px"></div>
+        <div style="font-size:16px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#6E6E76">Salta e parti subito</div>
+      </div>
+      <div style="margin-top:16px">
+        <div style="display:flex;align-items:baseline;gap:9px"><a href="#f14" style="font-size:10.5px;font-weight:800;font-family:ui-monospace,Menlo,monospace;background:var(--color-neutral-200);color:var(--color-text);padding:3px 7px;text-decoration:none">f14</a><span style="font-size:14.5px;font-weight:800">Pre-flight · il cerchio come quadrante</span></div>
+        <div style="font-size:13px;line-height:1.55;color:var(--color-neutral-600);margin-top:7px">L'unico posto dove il countdown è centrato e circolare: qui il telefono è ancora in mano e l'anello è il logo che si mette in moto. Nel Player il cerchio non torna più.</div>
+        <div style="font-size:13px;line-height:1.55;color:var(--color-neutral-700);margin-top:9px;padding-left:12px;border-left:2px solid var(--color-accent)"><b>La voce scelta è una riga toccabile in alto a destra</b> — la risposta alla domanda 4 dalla seconda sessione in poi. Cambiare registro costa un tap e non ha una schermata di impostazioni.</div>
+      </div>
+    </div>
+
+    <div id="f15" style="width:390px;scroll-margin-top:24px">
+      <div style="width:390px;height:844px;position:relative;overflow:hidden;background:#0A0A0B;border:1px solid #2a2a2e;color:#F5F5F0;display:flex;flex-direction:column;padding:54px 24px 34px">
+        <div style="font-size:14px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#6E6E76">Tabata + forza A</div>
+        <div style="height:2px;background:#232327;margin-top:12px"></div>
+        <div style="flex:1;display:flex;flex-direction:column;justify-content:center">
+          <svg width="86" height="86" viewBox="0 0 86 86"><circle cx="43" cy="43" r="37" fill="none" stroke="#C8FF00" stroke-width="9"></circle><circle cx="43" cy="43" r="11" fill="#C8FF00"></circle></svg>
+          <div style="font-size:74px;font-weight:800;line-height:.98;letter-spacing:-.03em;color:#C8FF00;margin-top:22px">Fatta.</div>
+          <div style="display:flex;align-items:baseline;gap:12px;margin-top:26px">
+            <span style="font-size:78px;font-weight:800;font-stretch:70%;line-height:1;font-variant-numeric:tabular-nums">24:38</span>
+          </div>
+          <div style="font-size:18px;color:#8b8b93;margin-top:8px">3 blocchi · 8 round · 2 serie chiuse a mano</div>
+          <div style="font-size:16px;color:#6E6E76;margin-top:6px">Stimavo 40-50. Sei andato più svelto.</div>
+        </div>
+        <div style="padding:28px 22px;background:#C8FF00;color:#0A0A0B;font-size:21px;font-weight:800;letter-spacing:.14em;text-transform:uppercase">Rifai</div>
+        <div style="padding:24px 22px;border:2px solid #F5F5F0;font-size:19px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;margin-top:10px">Salva in libreria</div>
+      </div>
+      <div style="margin-top:16px">
+        <div style="display:flex;align-items:baseline;gap:9px"><a href="#f15" style="font-size:10.5px;font-weight:800;font-family:ui-monospace,Menlo,monospace;background:var(--color-neutral-200);color:var(--color-text);padding:3px 7px;text-decoration:none">f15</a><span style="font-size:14.5px;font-weight:800">Fine</span></div>
+        <div style="font-size:13px;line-height:1.55;color:var(--color-neutral-600);margin-top:7px">Il cerchio si chiude e diventa pieno: è la terza forma dello stesso segno. Una parola, il tempo reale, due azioni. Nessun badge, nessun questionario.</div>
+        <div style="font-size:13px;line-height:1.55;color:var(--color-neutral-700);margin-top:9px;padding-left:12px;border-left:2px solid var(--color-accent)"><b>"Stimavo 40-50"</b> è l'unica frase che l'app si concede: chiude il cerchio con la promessa fatta in Conferma e ammette che la stima era larga. Uno strumento che confronta la previsione col risultato, non un complimento.</div>
+      </div>
+    </div>
+
+    <div id="f16" style="width:390px;scroll-margin-top:24px">
+      <div style="width:390px;height:844px;position:relative;overflow:hidden;background:#0A0A0B;border:1px solid #2a2a2e;color:#F5F5F0">
+        <div style="position:absolute;inset:0;display:flex;flex-direction:column;padding:54px 24px 34px">
+          <div style="font-size:14px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#6E6E76">Salvata in libreria</div>
+          <div style="height:2px;background:#232327;margin-top:12px"></div>
+          <div style="flex:1;display:flex;flex-direction:column;justify-content:center">
+            <svg width="86" height="86" viewBox="0 0 86 86"><circle cx="43" cy="43" r="37" fill="none" stroke="#C8FF00" stroke-width="9"></circle><circle cx="43" cy="43" r="11" fill="#C8FF00"></circle></svg>
+            <div style="font-size:74px;font-weight:800;line-height:.98;letter-spacing:-.03em;color:#C8FF00;margin-top:22px">Fatta.</div>
+            <div style="font-size:78px;font-weight:800;font-stretch:70%;line-height:1;margin-top:26px;font-variant-numeric:tabular-nums">24:38</div>
+            <div style="font-size:18px;color:#8b8b93;margin-top:8px">Seconda sessione salvata su questo telefono.</div>
+          </div>
+          <div style="border-top:2px solid #232327;padding-top:20px">
+            <div style="font-size:19px;font-weight:800;line-height:1.3">Le tieni solo qui.</div>
+            <div style="font-size:16px;line-height:1.5;color:#8b8b93;margin-top:7px">Se cambi telefono le perdi. Un account le porta con te — non serve per allenarsi.</div>
+            <div style="display:flex;gap:10px;margin-top:16px">
+              <div style="flex:1;padding:20px 16px;border:2px solid #F5F5F0;font-size:15px;font-weight:800;letter-spacing:.1em;text-transform:uppercase">Crea un account</div>
+              <div style="flex:1;padding:20px 16px;font-size:15px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#6E6E76">Non ora</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:16px">
+        <div style="display:flex;align-items:baseline;gap:9px"><a href="#f16" style="font-size:10.5px;font-weight:800;font-family:ui-monospace,Menlo,monospace;background:var(--color-neutral-200);color:var(--color-text);padding:3px 7px;text-decoration:none">f16</a><span style="font-size:14.5px;font-weight:800">La proposta di account</span></div>
+        <div style="font-size:13px;line-height:1.55;color:var(--color-neutral-600);margin-top:7px">Al secondo salvataggio, sotto una riga di divisione, dopo che il salvataggio è già avvenuto. Nessuna sovrapposizione, nessun modale, niente da chiudere.</div>
+        <div style="font-size:13px;line-height:1.55;color:var(--color-neutral-700);margin-top:9px;padding-left:12px;border-left:2px solid var(--color-accent)"><b>"Non serve per allenarsi"</b> è la frase che la rende una proposta invece di un muro. Dice il rischio concreto — cambi telefono, le perdi — e non promette vantaggi inventati.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <hr class="hr" style="margin:60px 0 26px">
+  <p style="font-size:14px;line-height:1.65;color:var(--color-neutral-600);margin:0;max-width:92ch">Restano fuori due deliverable del brief, entrambi da fare come sistema e non come schermata: <b style="color:var(--color-text)">l'identità</b> (§7 — il cerchio nei suoi tre ruoli, il lockup, l'icona a 24px e su home screen) e <b style="color:var(--color-text)">lo stile delle illustrazioni</b> (§8 — punto di vista, trattamento del corpo, movimento, con i cinque esempi). Nel Player i segni tratteggiati restano segnaposto finché non definiamo il secondo. Dimmi da quale dei due parto, o se prima vuoi rivedere qualcosa di queste sedici.</p>
+
+</div>
+</section>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1660},&quot;incertezza&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;tratteggio ambra&quot;,&quot;tratteggio bianco&quot;,&quot;etichetta DEDOTTO&quot;],&quot;default&quot;:&quot;tratteggio ambra&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Linguaggio dell'incertezza&quot;},&quot;provenienza&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Linguaggio dell'incertezza&quot;},&quot;durata&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;intervallo&quot;,&quot;numero secco&quot;],&quot;default&quot;:&quot;intervallo&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Durata stimata&quot;}}">
+class Component extends DCLogic {
+  radice = React.createRef();
+
+  applica(){
+    const el = this.radice.current;
+    if(!el) return;
+    const inc = this.props.incertezza || 'tratteggio ambra';
+    el.style.setProperty('--inc-color', inc === 'tratteggio bianco' ? '#F5F5F0' : '#FF9500');
+    el.style.setProperty('--inc-style', inc === 'etichetta DEDOTTO' ? 'none' : 'dashed');
+    el.style.setProperty('--inc-tag', inc === 'etichetta DEDOTTO' ? 'inline-block' : 'none');
+    el.style.setProperty('--prov', (this.props.provenienza ?? true) ? 'block' : 'none');
+
+    const secco = (this.props.durata || 'intervallo') === 'numero secco';
+    el.querySelectorAll('[data-durata]').forEach(n => {
+      const v = n.getAttribute('data-durata');
+      if(!secco){ n.textContent = v; return; }
+      const m = v.match(/(\d+)\s*-\s*(\d+)(.*)/);
+      n.textContent = m ? (Math.round((+m[1] + +m[2]) / 2) + m[3]) : v;
+    });
+  }
+
+  componentDidMount(){ this.applica(); }
+  componentDidUpdate(){ this.applica(); }
+
+  renderVals(){ return { radice: this.radice }; }
+}
+
+</script>
+</body>
+</html>

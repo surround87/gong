@@ -37,6 +37,7 @@
 
 .cta {
   display: block;
+  width: 100%;
   text-align: center;
   padding: 22px 24px;
   border: 2px solid #ff9500;
@@ -47,4 +48,6 @@
   letter-spacing: 0.14em;
   text-transform: uppercase;
   text-decoration: none;
+  font-family: inherit;
+  cursor: pointer;
 }

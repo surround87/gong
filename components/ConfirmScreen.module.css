@@ -1,0 +1,352 @@
+.screen {
+  min-height: 100dvh;
+  background: #0a0a0b;
+  color: #f5f5f0;
+  display: flex;
+  flex-direction: column;
+  padding: max(24px, env(safe-area-inset-top)) 24px 0;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex: none;
+}
+
+.kicker {
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #6e6e76;
+}
+
+.dedottiCount {
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #ff9500;
+  border-bottom: 3px dashed #ff9500;
+  padding-bottom: 2px;
+}
+
+.titolo {
+  font-size: clamp(24px, 8vw, 34px);
+  font-weight: 800;
+  line-height: 1.08;
+  margin-top: 10px;
+  border: none;
+  border-bottom: 2px solid #3a3a40;
+  padding: 0 0 8px;
+  background: transparent;
+  color: inherit;
+  font-family: inherit;
+  width: 100%;
+  flex: none;
+}
+
+.titolo:focus {
+  outline: none;
+  border-bottom-color: #c8ff00;
+}
+
+.durataRow {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-top: 18px;
+  flex: none;
+}
+
+.durata {
+  font-size: clamp(38px, 13vw, 52px);
+  font-weight: 800;
+  font-stretch: 75%;
+  line-height: 1;
+}
+
+.durataDedotta {
+  border-bottom: 3px dashed #ff9500;
+  padding-bottom: 3px;
+}
+
+.durataLabel {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #8b8b93;
+}
+
+.rule {
+  height: 2px;
+  background: #232327;
+  margin: 20px 0 0;
+  flex: none;
+}
+
+.list {
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0;
+}
+
+.blocco {
+  padding: 18px 0;
+  border-bottom: 1px solid #232327;
+  width: 100%;
+  background: transparent;
+  border-left: none;
+  border-right: none;
+  border-top: none;
+  color: inherit;
+  font-family: inherit;
+  text-align: left;
+  display: block;
+}
+
+.bloccoHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.bloccoNome {
+  font-size: 24px;
+  font-weight: 800;
+}
+
+.bloccoSchema {
+  font-size: 17px;
+  font-family: ui-monospace, Menlo, monospace;
+  color: #8b8b93;
+  flex: none;
+}
+
+.bloccoDettaglio {
+  font-size: 16px;
+  color: #8b8b93;
+  margin-top: 5px;
+}
+
+.dedottoTag {
+  border-bottom: 3px dashed #ff9500;
+  color: #f5f5f0;
+  padding-bottom: 2px;
+  cursor: pointer;
+  background: transparent;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  font: inherit;
+  margin-top: 8px;
+  display: inline-block;
+}
+
+.provenienza {
+  font-size: 14px;
+  font-family: ui-monospace, Menlo, monospace;
+  color: #6e6e76;
+  margin-top: 6px;
+}
+
+.nonSupportato {
+  font-size: 16px;
+  line-height: 1.45;
+  color: #8b8b93;
+  margin-top: 8px;
+}
+
+.hint {
+  font-size: 15px;
+  line-height: 1.5;
+  color: #6e6e76;
+  margin: 16px 0;
+}
+
+.avvia {
+  padding: 30px 22px;
+  background: #c8ff00;
+  color: #0a0a0b;
+  font-size: 23px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  border: none;
+  font-family: inherit;
+  cursor: pointer;
+  margin: 0 -24px;
+  flex: none;
+  padding-bottom: max(30px, env(safe-area-inset-bottom));
+}
+
+/* ---------- correction sheet (f11) ---------- */
+
+.sheetBackdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 10, 11, 0.8);
+  z-index: 30;
+}
+
+.sheet {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #0a0a0b;
+  border-top: 3px solid #ff9500;
+  padding: 26px 24px max(34px, env(safe-area-inset-bottom));
+  z-index: 31;
+}
+
+.sheetKicker {
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #ff9500;
+}
+
+.sheetTitle {
+  font-size: 26px;
+  font-weight: 800;
+  line-height: 1.2;
+  margin-top: 12px;
+}
+
+.sheetQuote {
+  font-family: ui-monospace, Menlo, monospace;
+  font-size: 15px;
+  line-height: 1.6;
+  color: #8b8b93;
+  margin-top: 10px;
+  border-left: 3px solid #ff9500;
+  padding-left: 11px;
+}
+
+.sheetWhy {
+  font-size: 16px;
+  line-height: 1.5;
+  color: #8b8b93;
+  margin-top: 12px;
+}
+
+.stepper {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 22px;
+}
+
+.stepBtn {
+  width: 84px;
+  height: 84px;
+  border: 2px solid #f5f5f0;
+  background: transparent;
+  color: #f5f5f0;
+  font-size: 38px;
+  font-weight: 400;
+  line-height: 1;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.stepValue {
+  flex: 1;
+  text-align: center;
+}
+
+.stepNumber {
+  font-size: clamp(52px, 18vw, 76px);
+  font-weight: 800;
+  font-stretch: 70%;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.stepUnit {
+  font-size: 22px;
+  font-weight: 800;
+  color: #8b8b93;
+  margin-left: 6px;
+}
+
+.sheetConfirm {
+  width: 100%;
+  padding: 24px 22px;
+  background: #f5f5f0;
+  color: #0a0a0b;
+  font-size: 19px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border: none;
+  font-family: inherit;
+  cursor: pointer;
+  margin-top: 22px;
+}
+
+/* ---------- f9 · which workout ---------- */
+
+.sceltaTitle {
+  font-size: clamp(28px, 10vw, 36px);
+  font-weight: 800;
+  line-height: 1.06;
+  letter-spacing: -0.02em;
+  margin-top: 22px;
+  flex: none;
+}
+
+.sceltaList {
+  display: flex;
+  flex-direction: column;
+  margin-top: 26px;
+  overflow-y: auto;
+  min-height: 0;
+}
+
+.sceltaRow {
+  padding: 22px 0;
+  border-top: 1px solid #232327;
+  background: transparent;
+  border-left: none;
+  border-right: none;
+  border-bottom: none;
+  color: inherit;
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+  width: 100%;
+}
+
+.sceltaRow:last-child {
+  border-bottom: 1px solid #232327;
+}
+
+.sceltaNome {
+  font-size: 26px;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.sceltaMeta {
+  font-size: 16px;
+  color: #8b8b93;
+  margin-top: 5px;
+}
+
+.sceltaNota {
+  font-size: 16px;
+  line-height: 1.5;
+  color: #8b8b93;
+  margin: 24px 0;
+  flex: none;
+}
+
+.spacer {
+  flex: 1;
+}
