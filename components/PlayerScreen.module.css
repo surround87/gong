@@ -218,7 +218,9 @@
   flex: 1;
   padding: 17px 8px;
   border: 2px solid #2c2c31;
-  background: transparent;
+  /* Opaque on purpose: the rising field passes behind the bar, and a
+     transparent button would put accent text on an accent ground. */
+  background: #0a0a0b;
   color: #6e6e76;
   font-family: inherit;
   font-size: 15px;
@@ -232,6 +234,10 @@
 
 .ctrl:active {
   background: #1c1c1f;
+}
+
+.ctrl:disabled {
+  opacity: 0.4;
 }
 
 /* The one control that carries the session forward reads a step louder than
