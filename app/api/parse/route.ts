@@ -5,7 +5,9 @@ import { NextResponse } from "next/server";
 import { RisultatoParsingSchema } from "@/lib/parsedSession";
 
 export const runtime = "nodejs";
-export const maxDuration = 60;
+// Reading a card takes far longer than the 60s default: the model reasons over
+// a messy document. 300s is the ceiling Vercel allows.
+export const maxDuration = 300;
 
 const SISTEMA = `Sei il parser di GONG, un'app che trasforma una scheda di allenamento già scritta da un professionista in una sessione guidata a voce con timer.
 
@@ -27,7 +29,7 @@ type Provider = "anthropic" | "deepseek";
 const MEDIA_IMMAGINE = ["image/jpeg", "image/png", "image/gif", "image/webp"];
 
 const DEEPSEEK_BASE_URL = "https://api.deepseek.com/anthropic";
-const DEEPSEEK_TESTO = "deepseek-v4-pro";
+const DEEPSEEK_TESTO = "deepseek-v4-flash";
 const DEEPSEEK_VISIONE = "deepseek-v4-flash-vision-exp";
 
 function jsonError(errore: string, status: number, extra: Record<string, unknown> = {}) {
@@ -139,7 +141,7 @@ export async function POST(request: Request) {
 async function leggiConClaude(client: Anthropic, content: Anthropic.ContentBlockParam[]) {
   const response = await client.messages.parse({
     model: "claude-opus-5",
-    max_tokens: 16000,
+    max_tokens: 8000,
     thinking: { type: "adaptive" },
     system: SISTEMA,
     messages: [{ role: "user", content }],
@@ -163,7 +165,7 @@ async function leggiConDeepSeek(
   const schema = JSON.stringify(z.toJSONSchema(RisultatoParsingSchema, { io: "output" }));
   const response = await client.messages.create({
     model: conImmagine ? DEEPSEEK_VISIONE : DEEPSEEK_TESTO,
-    max_tokens: 16000,
+    max_tokens: 8000,
     system: `${SISTEMA}
 
 Rispondi ESCLUSIVAMENTE con un oggetto JSON valido conforme a questo JSON Schema. Niente testo prima o dopo, niente blocchi di codice markdown.

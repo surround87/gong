@@ -52,6 +52,9 @@ function leggiFile(file: File): Promise<FileScelto> {
 
 const TESTUALI = ["txt", "csv", "md", "text"];
 
+/** Past this the wait stops being a wait and becomes a dead end. */
+const LETTURA_TIMEOUT_MS = 120_000;
+
 export default function InputScreen() {
   const router = useRouter();
   const [fase, setFase] = useState<Fase>({ nome: "input" });
@@ -64,6 +67,7 @@ export default function InputScreen() {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const cameraInputRef = useRef<HTMLInputElement | null>(null);
   const dragDepth = useRef(0);
+  const abortRef = useRef<AbortController | null>(null);
 
   useEffect(() => {
     setLibreria(getSavedSessions().slice().reverse());
@@ -90,6 +94,9 @@ export default function InputScreen() {
     }
 
     setFase({ nome: "lettura" });
+    const controller = new AbortController();
+    abortRef.current = controller;
+    const scaduto = setTimeout(() => controller.abort("timeout"), LETTURA_TIMEOUT_MS);
     try {
       const res = await fetch("/api/parse", {
         method: "POST",
@@ -99,7 +106,9 @@ export default function InputScreen() {
           "x-gong-provider": getProvider(),
         },
         body: JSON.stringify(payload),
+        signal: controller.signal,
       });
+      clearTimeout(scaduto);
       const data = await res.json();
 
       if (!res.ok) {
@@ -136,13 +145,19 @@ export default function InputScreen() {
 
       window.sessionStorage.setItem("gong:scelte", JSON.stringify(risultato.allenamenti));
       router.push("/scelta");
-    } catch {
+    } catch (e) {
+      clearTimeout(scaduto);
+      const annullato = e instanceof DOMException && e.name === "AbortError";
       setFase({
         nome: "errore",
-        titolo: "Non sono riuscito a leggerla.",
+        titolo: annullato ? "Ci stava mettendo troppo." : "Non sono riuscito a leggerla.",
         testoLetto: null,
-        diagnosi: "La connessione è caduta durante la lettura.",
+        diagnosi: annullato
+          ? "La lettura ha superato i due minuti. Se la scheda è molto lunga, prova a incollarne un pezzo per volta."
+          : "La connessione è caduta durante la lettura.",
       });
+    } finally {
+      abortRef.current = null;
     }
   }
 
@@ -231,6 +246,16 @@ export default function InputScreen() {
           <div className={styles.meterFill} style={{ width: `${pct}%` }} />
           <div className={styles.meterTicks} />
         </div>
+        <button
+          className={styles.ghost}
+          onClick={() => {
+            abortRef.current?.abort();
+            setFase({ nome: "input" });
+            setScrivendo(true);
+          }}
+        >
+          Annulla
+        </button>
       </div>
     );
   }
