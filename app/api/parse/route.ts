@@ -29,7 +29,6 @@ const MEDIA_IMMAGINE = ["image/jpeg", "image/png", "image/gif", "image/webp"];
 const DEEPSEEK_BASE_URL = "https://api.deepseek.com/anthropic";
 const DEEPSEEK_TESTO = "deepseek-v4-pro";
 const DEEPSEEK_VISIONE = "deepseek-v4-flash-vision-exp";
-const NOME_TOOL = "restituisci_scheda";
 
 function jsonError(errore: string, status: number, extra: Record<string, unknown> = {}) {
   return NextResponse.json({ errore, ...extra }, { status });
@@ -122,8 +121,11 @@ export async function POST(request: Request) {
     if (error instanceof Anthropic.RateLimitError) {
       return jsonError("Troppe richieste in questo momento. Riprova fra poco.", 429);
     }
-    if (error instanceof z.ZodError) {
-      return jsonError("La risposta del modello non aveva la forma attesa.", 502);
+    if (error instanceof z.ZodError || error instanceof SyntaxError) {
+      return jsonError(
+        "Il modello ha risposto, ma non nella forma attesa. Riprova, o usa una chiave Claude.",
+        502,
+      );
     }
     console.error(
       "[parse] lettura fallita:",
@@ -147,32 +149,72 @@ async function leggiConClaude(client: Anthropic, content: Anthropic.ContentBlock
 }
 
 /**
- * DeepSeek's compatible endpoint doesn't do structured outputs, but it does do
- * tool calls — so the schema is imposed as a forced tool, and the tool input is
- * validated against the same zod schema before it's trusted.
+ * DeepSeek's compatible endpoint supports neither structured outputs nor a
+ * *forced* tool call — its models think by default, and thinking mode rejects
+ * `tool_choice: {type: "tool"}` with a 400. So the schema is stated in the
+ * prompt, the reply is asked for as bare JSON, and the result is validated
+ * against the same zod schema before it is trusted.
  */
 async function leggiConDeepSeek(
   client: Anthropic,
   content: Anthropic.ContentBlockParam[],
   conImmagine: boolean,
 ) {
-  const schema = z.toJSONSchema(RisultatoParsingSchema, { io: "output" });
+  const schema = JSON.stringify(z.toJSONSchema(RisultatoParsingSchema, { io: "output" }));
   const response = await client.messages.create({
     model: conImmagine ? DEEPSEEK_VISIONE : DEEPSEEK_TESTO,
     max_tokens: 16000,
-    system: SISTEMA,
+    system: `${SISTEMA}
+
+Rispondi ESCLUSIVAMENTE con un oggetto JSON valido conforme a questo JSON Schema. Niente testo prima o dopo, niente blocchi di codice markdown.
+
+${schema}`,
     messages: [{ role: "user", content }],
-    tools: [
-      {
-        name: NOME_TOOL,
-        description: "Restituisce la scheda letta, strutturata.",
-        input_schema: schema as Anthropic.Tool.InputSchema,
-      },
-    ],
-    tool_choice: { type: "tool", name: NOME_TOOL },
   });
 
-  const blocco = response.content.find((b) => b.type === "tool_use");
-  if (!blocco || blocco.type !== "tool_use") return null;
-  return RisultatoParsingSchema.parse(blocco.input);
+  const testo = response.content
+    .filter((b): b is Anthropic.TextBlock => b.type === "text")
+    .map((b) => b.text)
+    .join("");
+
+  const grezzo = estraiJson(testo);
+  if (!grezzo) return null;
+  return RisultatoParsingSchema.parse(JSON.parse(grezzo));
+}
+
+/**
+ * Models asked for bare JSON still sometimes wrap it in a markdown fence or add
+ * a sentence around it. Take the outermost balanced object, ignoring braces
+ * that appear inside strings.
+ */
+function estraiJson(testo: string): string | null {
+  const inizio = testo.indexOf("{");
+  if (inizio === -1) return null;
+
+  let profondita = 0;
+  let inStringa = false;
+  let escape = false;
+
+  for (let i = inizio; i < testo.length; i++) {
+    const c = testo[i];
+    if (escape) {
+      escape = false;
+      continue;
+    }
+    if (c === "\\") {
+      escape = true;
+      continue;
+    }
+    if (c === '"') {
+      inStringa = !inStringa;
+      continue;
+    }
+    if (inStringa) continue;
+    if (c === "{") profondita++;
+    else if (c === "}") {
+      profondita--;
+      if (profondita === 0) return testo.slice(inizio, i + 1);
+    }
+  }
+  return null;
 }
