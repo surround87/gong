@@ -8,7 +8,7 @@ import {
   type RisultatoParsing,
 } from "@/lib/parsedSession";
 import { getSavedSessions, type CompletedSession } from "@/lib/sessionPrefs";
-import { getApiKey } from "@/lib/apiKey";
+import { getApiKey, getProvider, PROVIDERS } from "@/lib/apiKey";
 import styles from "./InputScreen.module.css";
 
 type Fase =
@@ -93,7 +93,11 @@ export default function InputScreen() {
     try {
       const res = await fetch("/api/parse", {
         method: "POST",
-        headers: { "Content-Type": "application/json", "x-anthropic-key": chiave },
+        headers: {
+          "Content-Type": "application/json",
+          "x-gong-key": chiave,
+          "x-gong-provider": getProvider(),
+        },
         body: JSON.stringify(payload),
       });
       const data = await res.json();
@@ -144,6 +148,16 @@ export default function InputScreen() {
 
   async function gestisciFile(file: File) {
     const scelto = await leggiFile(file);
+    const info = PROVIDERS[getProvider()];
+    if (scelto.mediaType === "application/pdf" && !info.leggePdf) {
+      setFase({
+        nome: "errore",
+        titolo: `${info.nome} non legge i PDF.`,
+        testoLetto: null,
+        diagnosi: "Fai una foto della scheda, oppure cambia chiave dalla schermata Chiave.",
+      });
+      return;
+    }
     if (TESTUALI.includes(scelto.estensione)) {
       const contenuto = atob(scelto.base64);
       setFase({ nome: "input" });

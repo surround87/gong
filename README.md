@@ -31,11 +31,26 @@ sedici schermate) come riferimento.
 
 ## La chiave API
 
-La lettura usa Claude, quindi serve una chiave Anthropic. In questa versione
-**la chiave è dell'utente**: la inserisce in `/chiave`, resta nel `localStorage`
-del suo browser, e viaggia in un header verso `/api/parse` solo nel momento
-della lettura. Il server la usa per quella chiamata e basta — non la salva, non
-la scrive nei log, non la mette mai in un URL.
+La lettura usa un modello, quindi serve una chiave. In questa versione **la
+chiave è dell'utente**: la inserisce in `/chiave`, resta nel `localStorage` del
+suo browser, e viaggia in un header verso `/api/parse` solo nel momento della
+lettura. Il server la usa per quella chiamata e basta — non la salva, non la
+scrive nei log, non la mette mai in un URL.
+
+Due provider, riconosciuti dal prefisso della chiave:
+
+| | Chiave | Legge | Modello |
+|---|---|---|---|
+| **Claude** | `sk-ant-…` | testo, foto, PDF | `claude-opus-5` |
+| **DeepSeek** | `sk-…` | testo, foto | `deepseek-v4-pro`, `deepseek-v4-flash-vision-exp` per le foto |
+
+DeepSeek passa dal suo endpoint compatibile Anthropic
+(`https://api.deepseek.com/anthropic`), quindi il codice usa un solo SDK e
+cambia solo il `baseURL`. Due differenze reali, gestite esplicitamente:
+i **PDF** non sono supportati (bloccati con un messaggio chiaro, senza
+sprecare una chiamata), e gli **structured outputs** nemmeno — lì lo schema
+viene imposto con una tool call forzata e il risultato validato con lo stesso
+schema zod.
 
 Conseguenza pratica: il deploy pubblico non espone la tua carta, perché ognuno
 paga il proprio consumo, e **su Vercel non serve impostare nessuna variabile
