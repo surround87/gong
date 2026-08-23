@@ -167,13 +167,37 @@ export function setAllenamentoAttivo(a: Allenamento) {
   window.localStorage.setItem(ACTIVE_KEY, JSON.stringify(a));
 }
 
-export function getAllenamentoAttivo(): Allenamento | null {
-  if (typeof window === "undefined") return null;
+export type EsitoAllenamento =
+  | { stato: "ok"; allenamento: Allenamento }
+  | { stato: "assente" }
+  | { stato: "illeggibile"; motivo: string };
+
+/**
+ * Distinguishes "there is nothing here" from "there is something and I can't
+ * read it" — the second used to send the user silently back to the input
+ * screen, which looked exactly like the read having failed.
+ */
+export function leggiAllenamentoAttivo(): EsitoAllenamento {
+  if (typeof window === "undefined") return { stato: "assente" };
+  const raw = window.localStorage.getItem(ACTIVE_KEY);
+  if (!raw) return { stato: "assente" };
+
+  let grezzo: unknown;
   try {
-    const raw = window.localStorage.getItem(ACTIVE_KEY);
-    if (!raw) return null;
-    return AllenamentoSchema.parse(JSON.parse(raw));
+    grezzo = JSON.parse(raw);
   } catch {
-    return null;
+    return { stato: "illeggibile", motivo: "il risultato salvato non è leggibile" };
   }
+
+  const esito = AllenamentoSchema.safeParse(grezzo);
+  if (esito.success) return { stato: "ok", allenamento: esito.data };
+
+  const primo = esito.error.issues[0];
+  const dove = primo?.path.join(".") || "la sessione";
+  return { stato: "illeggibile", motivo: `campo «${dove}»: ${primo?.message ?? "forma inattesa"}` };
+}
+
+export function getAllenamentoAttivo(): Allenamento | null {
+  const esito = leggiAllenamentoAttivo();
+  return esito.stato === "ok" ? esito.allenamento : null;
 }

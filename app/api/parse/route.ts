@@ -117,6 +117,13 @@ export async function POST(request: Request) {
     if (!parsed) {
       return jsonError("Ho letto la scheda ma non sono riuscito a strutturarla.", 502);
     }
+    // Counts only — never the card itself. Enough to tell, from the logs,
+    // whether a 200 actually carried a workout.
+    console.log(
+      `[parse] esito provider=${provider} allenamento=${parsed.eUnAllenamento} ` +
+        `trovati=${parsed.allenamenti.length} ` +
+        `blocchi=${parsed.allenamenti.map((a) => a.blocchi.length).join(",") || "-"}`,
+    );
     return NextResponse.json(parsed);
   } catch (error) {
     if (error instanceof Anthropic.AuthenticationError) {

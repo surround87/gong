@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   contaDedotti,
-  getAllenamentoAttivo,
+  leggiAllenamentoAttivo,
   setAllenamentoAttivo,
   type Allenamento,
   type Blocco,
@@ -45,16 +45,40 @@ function aggiornaDettaglio(dettaglio: string, da: number, a: number): string {
 export default function ConfirmScreen() {
   const router = useRouter();
   const [allenamento, setAllenamento] = useState<Allenamento | null>(null);
+  const [problema, setProblema] = useState<string | null>(null);
   const [correzione, setCorrezione] = useState<Correzione | null>(null);
 
   useEffect(() => {
-    const a = getAllenamentoAttivo();
-    if (!a) {
+    const esito = leggiAllenamentoAttivo();
+    if (esito.stato === "ok") {
+      setAllenamento(esito.allenamento);
+      return;
+    }
+    if (esito.stato === "assente") {
       router.replace("/input");
       return;
     }
-    setAllenamento(a);
+    setProblema(esito.motivo);
   }, [router]);
+
+  if (problema) {
+    return (
+      <div className={styles.screen}>
+        <div className={styles.kicker}>Letta, ma non mostrabile</div>
+        <div className={styles.rule} />
+        <div className={styles.sceltaTitle}>
+          Ho letto la scheda,
+          <br />
+          ma non riesco a mostrarla.
+        </div>
+        <div className={styles.sceltaNota}>{problema}</div>
+        <div className={styles.spacer} />
+        <button className={styles.avvia} onClick={() => router.push("/input")}>
+          Riprova
+        </button>
+      </div>
+    );
+  }
 
   if (!allenamento) return <div className={styles.screen} />;
 
