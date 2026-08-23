@@ -135,10 +135,12 @@ export function useWorkoutSession(steps: WorkoutStep[], persona: Persona) {
       } else if (step.t === "lavoro") {
         if (step.ultimo) speak(persona, "ultimoRound");
         else speak(persona, "lavoro", step.eser);
-      } else if (step.t === "riposo") {
-        speak(persona, "riposo");
-      } else if (step.t === "recupero") {
-        speak(persona, "recupero");
+      } else if (step.t === "riposo" || step.t === "recupero") {
+        // During rest the useful thing to hear is what comes next, not the
+        // word "rest" — the screen already says that in colour.
+        const prossimo = step.eser.replace(/^→\s*/, "").trim();
+        if (prossimo) speak(persona, "riposoConProssimo", prossimo);
+        else speak(persona, step.t === "riposo" ? "riposo" : "recupero");
       }
 
       if (!halfwaySaidRef.current && index > steps.length / 2 && steps.length > 20) {
@@ -274,6 +276,41 @@ export function useWorkoutSession(steps: WorkoutStep[], persona: Persona) {
     if (longPressTimerRef.current) clearTimeout(longPressTimerRef.current);
   }, []);
 
+  /** Jump anywhere in the session by hand; a manual jump always resumes. */
+  const vaiA = useCallback(
+    (index: number) => {
+      const target = Math.max(0, Math.min(index, steps.length - 1));
+      if (statusRef.current === "idle" || statusRef.current === "done") {
+        statusRef.current = "running";
+        if (!sessionStartRef.current) sessionStartRef.current = Date.now();
+        setDisplay((prev) => ({ ...prev, status: "running" }));
+      }
+      goTo(target);
+    },
+    [steps.length, goTo],
+  );
+
+  const avanti = useCallback(() => {
+    // Past the last step this is "finish", which goTo already handles.
+    if (indexRef.current >= steps.length - 1) {
+      goTo(steps.length);
+      return;
+    }
+    vaiA(indexRef.current + 1);
+  }, [steps.length, goTo, vaiA]);
+
+  const indietro = useCallback(() => vaiA(indexRef.current - 1), [vaiA]);
+
+  const azzera = useCallback(() => {
+    statusRef.current = "idle";
+    indexRef.current = 0;
+    sessionStartRef.current = 0;
+    halfwaySaidRef.current = false;
+    setDisplay(initialDisplay(steps));
+    setProgress(0);
+    setRise(0);
+  }, [steps, setProgress, setRise]);
+
   const onTap = useCallback(() => {
     if (longPressFiredRef.current) {
       longPressFiredRef.current = false;
@@ -291,6 +328,10 @@ export function useWorkoutSession(steps: WorkoutStep[], persona: Persona) {
     progressRef,
     riseRef,
     start,
+    togglePause,
+    avanti,
+    indietro,
+    azzera,
     onPointerDown,
     onPointerUp,
     onTap,

@@ -8,6 +8,7 @@ type PhraseTable = {
   meta: () => string;
   serie: (eser: string, rip: number) => string;
   recupero: () => string;
+  riposoConProssimo: (prossimo: string) => string;
   fine: () => string;
   sveglia: () => string;
 };
@@ -21,6 +22,7 @@ const FRASI: Record<Persona, PhraseTable> = {
     meta: () => "Metà sessione, tieni duro!",
     serie: (e, r) => `${e}, ${r} ripetizioni. Tocca quando hai finito.`,
     recupero: () => "Recupero",
+    riposoConProssimo: (p) => `Respira. Poi ${p}.`,
     fine: () => "Finita! Grande.",
     sveglia: () => "Ci sei ancora? Tocca lo schermo quando hai finito.",
   },
@@ -32,6 +34,7 @@ const FRASI: Record<Persona, PhraseTable> = {
     meta: () => "Metà",
     serie: (e, r) => `${e}, ${r} ripetizioni. Tocca a fine serie.`,
     recupero: () => "Recupero",
+    riposoConProssimo: (p) => `Riposo. Poi ${p}.`,
     fine: () => "Sessione conclusa.",
     sveglia: () => "In attesa. Tocca lo schermo.",
   },

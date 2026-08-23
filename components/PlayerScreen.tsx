@@ -52,6 +52,10 @@ export default function PlayerScreen() {
     progressRef,
     riseRef,
     start,
+    togglePause,
+    avanti,
+    indietro,
+    azzera,
     onPointerDown,
     onPointerUp,
     onTap,
@@ -177,18 +181,34 @@ export default function PlayerScreen() {
             <div ref={progressRef} className={styles.meterFill} />
             <div className={styles.meterTicks} />
           </div>
-          {showControls && (
-            <div className={styles.controls}>
-              <div className={styles.ctrl}>{ctrlPrimaryLabel}</div>
-              <div className={styles.ctrl}>Termina</div>
-            </div>
-          )}
         </div>
       </div>
 
       <div ref={riseRef} className={styles.rise} />
 
       {paused && <div className={styles.pauseBanner}>In pausa</div>}
+
+      {/* Outside .wrap on purpose: the rising field inverts everything it
+          covers, and the controls have to stay legible underneath it.
+          They also swallow the tap/long-press handlers on the screen. */}
+      <div
+        className={styles.controls}
+        onClick={(e) => e.stopPropagation()}
+        onPointerDown={(e) => e.stopPropagation()}
+      >
+        <button className={styles.ctrl} onClick={indietro} aria-label="Indietro">
+          ‹
+        </button>
+        <button className={`${styles.ctrl} ${styles.ctrlPrimary}`} onClick={togglePause}>
+          {status === "idle" ? "Avvia" : status === "paused" ? "Riprendi" : "Pausa"}
+        </button>
+        <button className={styles.ctrl} onClick={avanti} aria-label="Avanti">
+          ›
+        </button>
+        <button className={styles.ctrl} onClick={azzera} aria-label="Azzera">
+          ⟲
+        </button>
+      </div>
     </div>
   );
 }
