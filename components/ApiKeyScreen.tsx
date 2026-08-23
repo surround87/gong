@@ -141,6 +141,7 @@ export default function ApiKeyScreen() {
       <button className={styles.ghost} onClick={() => router.push("/")}>
         Torna indietro
       </button>
+      <div className={styles.build}>build {process.env.NEXT_PUBLIC_BUILD}</div>
     </div>
   );
 }

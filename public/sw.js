@@ -1,8 +1,14 @@
-// Minimal stale-while-revalidate service worker for the GONG app shell.
-// Static export means there's no server to fall back to, so once a URL has
-// been fetched once, it stays available offline; requests are re-fetched in
-// the background to keep the cache fresh for next time.
-const CACHE = "gong-v1";
+// Service worker for the GONG app shell.
+//
+// The first version served everything cache-first, which meant a phone kept
+// running the previous build after a deploy — a fix could be live on the
+// server and still absent on the device. Two different strategies now:
+//
+//   navigations (the HTML that pulls in the current JS) → network first,
+//     cache only as an offline fallback;
+//   everything else → cache first, because Next fingerprints those filenames,
+//     so a changed file is a different URL and can never be stale.
+const CACHE = "gong-v2";
 
 self.addEventListener("install", () => {
   self.skipWaiting();
@@ -17,22 +23,36 @@ self.addEventListener("activate", (event) => {
   );
 });
 
+function metti(req, res) {
+  if (res && res.status === 200 && res.type === "basic") {
+    const copia = res.clone();
+    caches.open(CACHE).then((cache) => cache.put(req, copia));
+  }
+  return res;
+}
+
 self.addEventListener("fetch", (event) => {
   const req = event.request;
   if (req.method !== "GET") return;
 
+  const url = new URL(req.url);
+  if (url.origin !== self.location.origin) return;
+  // The reader is never cached: it's a POST anyway, but be explicit.
+  if (url.pathname.startsWith("/api/")) return;
+
+  if (req.mode === "navigate") {
+    event.respondWith(
+      fetch(req)
+        .then((res) => metti(req, res))
+        .catch(() => caches.match(req).then((c) => c || caches.match("/"))),
+    );
+    return;
+  }
+
   event.respondWith(
     caches.match(req).then((cached) => {
-      const network = fetch(req)
-        .then((res) => {
-          if (res && res.status === 200) {
-            const copy = res.clone();
-            caches.open(CACHE).then((cache) => cache.put(req, copy));
-          }
-          return res;
-        })
-        .catch(() => cached);
-      return cached || network;
+      if (cached) return cached;
+      return fetch(req).then((res) => metti(req, res));
     }),
   );
 });
