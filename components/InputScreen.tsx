@@ -16,7 +16,13 @@ type Fase =
   | { nome: "input" }
   | { nome: "fileRicevuto"; file: FileScelto }
   | { nome: "lettura" }
-  | { nome: "errore"; titolo: string; testoLetto: string | null; diagnosi: string | null };
+  | {
+      nome: "errore";
+      titolo: string;
+      testoLetto: string | null;
+      diagnosi: string | null;
+      tecnico?: string;
+    };
 
 interface FileScelto {
   nome: string;
@@ -120,6 +126,7 @@ export default function InputScreen() {
             titolo: "Questo file è troppo pesante.",
             testoLetto: null,
             diagnosi: "Fotografa solo la parte con gli esercizi, oppure incolla il testo.",
+            tecnico: `413 · corpo troppo grande · ${getProvider()}`,
           });
           return;
         }
@@ -133,6 +140,7 @@ export default function InputScreen() {
           titolo: "Non sono riuscito a leggerla.",
           testoLetto: null,
           diagnosi: data?.errore ?? `Il lettore ha risposto con un errore ${res.status}.`,
+          tecnico: `${res.status} · ${getProvider()} · ${data?.errore ?? "nessun dettaglio"}`,
         });
         return;
       }
@@ -166,6 +174,9 @@ export default function InputScreen() {
         diagnosi: annullato
           ? "La lettura ha superato i due minuti. Se la scheda è molto lunga, prova a incollarne un pezzo per volta."
           : "La connessione è caduta durante la lettura.",
+        tecnico: annullato
+          ? "annullato dopo 120s"
+          : `richiesta fallita · ${e instanceof Error ? e.message : "causa sconosciuta"}`,
       });
     } finally {
       abortRef.current = null;
@@ -308,6 +319,16 @@ export default function InputScreen() {
             </>
           )}
           {fase.diagnosi && <div className={styles.errorDiagnosis}>{fase.diagnosi}</div>}
+          {fase.tecnico && (
+            <button
+              className={styles.tecnico}
+              onClick={() => navigator.clipboard?.writeText(fase.tecnico ?? "")}
+              title="Tocca per copiare"
+            >
+              {fase.tecnico}
+              <span className={styles.copia}>copia</span>
+            </button>
+          )}
         </div>
         <button
           className={styles.outline}

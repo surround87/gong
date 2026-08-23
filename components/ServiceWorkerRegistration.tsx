@@ -3,35 +3,25 @@
 import { useEffect } from "react";
 
 /**
- * Registers the app-shell service worker, and reloads once when a new one
- * takes over. Without that reload the page you are looking at keeps running
- * the build it was loaded with, so a deployed fix stays invisible on the
- * device until the app is opened a second time.
+ * Deliberately does the opposite of its name for now: it tears down any
+ * service worker still registered from an earlier build, and the caches it
+ * left behind. A cache-first worker kept devices running old code after a
+ * deploy, which cost two debugging rounds on bugs that were already fixed.
+ * Caching comes back once the reader is stable — as a decision, not a default.
  */
 export default function ServiceWorkerRegistration() {
   useEffect(() => {
     if (!("serviceWorker" in navigator)) return;
-
-    let ricaricato = false;
-    const onControllerChange = () => {
-      if (ricaricato) return;
-      ricaricato = true;
-      window.location.reload();
-    };
-    navigator.serviceWorker.addEventListener("controllerchange", onControllerChange);
-
-    const registra = () => {
-      navigator.serviceWorker
-        .register("/sw.js")
-        .then((reg) => reg.update())
-        .catch((err) => console.error("Service worker registration failed:", err));
-    };
-    if (document.readyState === "complete") registra();
-    else window.addEventListener("load", registra);
-
-    return () => {
-      navigator.serviceWorker.removeEventListener("controllerchange", onControllerChange);
-    };
+    navigator.serviceWorker
+      .getRegistrations()
+      .then((regs) => Promise.all(regs.map((r) => r.unregister())))
+      .catch(() => {});
+    if ("caches" in window) {
+      caches
+        .keys()
+        .then((keys) => Promise.all(keys.map((k) => caches.delete(k))))
+        .catch(() => {});
+    }
   }, []);
 
   return null;
