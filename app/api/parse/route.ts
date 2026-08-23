@@ -32,6 +32,9 @@ const DEEPSEEK_BASE_URL = "https://api.deepseek.com/anthropic";
 const DEEPSEEK_TESTO = "deepseek-v4-flash";
 const DEEPSEEK_VISIONE = "deepseek-v4-flash-vision-exp";
 
+/** The reply ran past the token budget, so whatever arrived is cut in half. */
+class SchedaTroppoLunga extends Error {}
+
 function jsonError(errore: string, status: number, extra: Record<string, unknown> = {}) {
   return NextResponse.json({ errore, ...extra }, { status });
 }
@@ -123,6 +126,12 @@ export async function POST(request: Request) {
     if (error instanceof Anthropic.RateLimitError) {
       return jsonError("Troppe richieste in questo momento. Riprova fra poco.", 429);
     }
+    if (error instanceof SchedaTroppoLunga) {
+      return jsonError(
+        "La scheda è troppo lunga per essere letta in una volta. Provane un pezzo per volta.",
+        413,
+      );
+    }
     if (error instanceof z.ZodError || error instanceof SyntaxError) {
       return jsonError(
         "Il modello ha risposto, ma non nella forma attesa. Riprova, o usa una chiave Claude.",
@@ -147,6 +156,7 @@ async function leggiConClaude(client: Anthropic, content: Anthropic.ContentBlock
     messages: [{ role: "user", content }],
     output_config: { format: zodOutputFormat(RisultatoParsingSchema) },
   });
+  if (response.stop_reason === "max_tokens") throw new SchedaTroppoLunga();
   return response.parsed_output ?? null;
 }
 
@@ -173,6 +183,8 @@ Rispondi ESCLUSIVAMENTE con un oggetto JSON valido conforme a questo JSON Schema
 ${schema}`,
     messages: [{ role: "user", content }],
   });
+
+  if (response.stop_reason === "max_tokens") throw new SchedaTroppoLunga();
 
   const testo = response.content
     .filter((b): b is Anthropic.TextBlock => b.type === "text")
