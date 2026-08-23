@@ -9,6 +9,7 @@ import {
 } from "@/lib/parsedSession";
 import { getSavedSessions, type CompletedSession } from "@/lib/sessionPrefs";
 import { getApiKey, getProvider, PROVIDERS } from "@/lib/apiKey";
+import { BYTE_MASSIMI, comprimiImmagine, stimaByteBase64 } from "@/lib/immagine";
 import styles from "./InputScreen.module.css";
 
 type Fase =
@@ -109,9 +110,19 @@ export default function InputScreen() {
         signal: controller.signal,
       });
       clearTimeout(scaduto);
-      const data = await res.json();
+      // An infrastructure error (413, 504) doesn't come back as JSON.
+      const data = await res.json().catch(() => null);
 
       if (!res.ok) {
+        if (res.status === 413) {
+          setFase({
+            nome: "errore",
+            titolo: "Questo file è troppo pesante.",
+            testoLetto: null,
+            diagnosi: "Fotografa solo la parte con gli esercizi, oppure incolla il testo.",
+          });
+          return;
+        }
         // A key problem is a detour, not a dead end — send them to fix it.
         if (data?.chiaveMancante) {
           router.push("/chiave");
@@ -121,7 +132,7 @@ export default function InputScreen() {
           nome: "errore",
           titolo: "Non sono riuscito a leggerla.",
           testoLetto: null,
-          diagnosi: data?.errore ?? "Riprova fra poco.",
+          diagnosi: data?.errore ?? `Il lettore ha risposto con un errore ${res.status}.`,
         });
         return;
       }
@@ -164,6 +175,26 @@ export default function InputScreen() {
   async function gestisciFile(file: File) {
     const scelto = await leggiFile(file);
     const info = PROVIDERS[getProvider()];
+
+    if (scelto.mediaType.startsWith("image/")) {
+      const compressa = await comprimiImmagine(file);
+      if (compressa) {
+        scelto.mediaType = compressa.mediaType;
+        scelto.base64 = compressa.base64;
+        scelto.kb = Math.max(1, Math.round(stimaByteBase64(compressa.base64) / 1024));
+      }
+    }
+
+    if (stimaByteBase64(scelto.base64) > BYTE_MASSIMI) {
+      setFase({
+        nome: "errore",
+        titolo: "Questo file è troppo pesante.",
+        testoLetto: null,
+        diagnosi:
+          "Non riesco a mandarlo al lettore. Prova a fotografare solo la parte con gli esercizi, o a incollare il testo.",
+      });
+      return;
+    }
     if (scelto.mediaType === "application/pdf" && !info.leggePdf) {
       setFase({
         nome: "errore",

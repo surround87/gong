@@ -18,6 +18,7 @@ Regole:
 - Un blocco è "tempo" se ha intervalli a tempo (tabata, EMOM, circuiti a tempo, plank a secondi), "serie" se è a ripetizioni chiuse dall'utente (es. 4x8 panca), "non-supportato" se non ha tempi da scandire (es. AMRAP o chipper a cronometro libero come "Fran").
 - Per ogni valore che NON leggi esplicitamente ma deduci, aggiungi una voce in "dedotti" con: il campo, un'etichetta leggibile, la riga testuale ESATTA della scheda da cui l'hai ricavato, e una spiegazione breve in prima persona (es. «"lungo" su una 5×5 di squat, per me, è 180 secondi.»). Non inventare provenienze: la riga deve esistere nell'input.
 - Non marcare come dedotto ciò che è scritto nero su bianco.
+- "round" è il NUMERO TOTALE di intervalli di lavoro del blocco, non il numero di giri. Un circuito di N esercizi ripetuto X volte (es. 5 esercizi con "X 3") ha round = N × X, e "esercizi" elencati nell'ordine in cui si susseguono: il player li fa ruotare da solo. Nell'esempio: 5 esercizi, X 3, 30"/10" → round 15, lavoroSec 30, riposoSec 10, schema "15 × 30/10".
 - "durataStimataMin" è un intervallo onesto [minimo, massimo], mai un numero secco.
 - "schema" è la sintesi compatta (es. "8 × 20/10", "4×8"). "dettaglio" elenca gli esercizi e il recupero (es. "Panca piana · Rematore · rec 90\\"").
 - Se la scheda contiene più allenamenti distinti (giorni, settimane, sedute), restituiscine uno per ciascuno in "allenamenti", con titoli che li distinguano.
